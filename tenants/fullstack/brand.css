@@ -1,0 +1,377 @@
+html[data-tenant="fullstack"] .brand-logo-image { width: 190px; height: auto; object-fit: contain; }
+html[data-tenant="fullstack"] .oversized-wordmark { font-size: clamp(42px, 12.2vw, 190px); }
+html[data-tenant="fullstack"] .site-splash__wordmark { font-size: clamp(38px, 9vw, 130px); }
+html[data-tenant="fullstack"] .footer-company p { max-width: 580px; overflow-wrap: anywhere; line-height: 1.7; }
+html[data-tenant="fullstack"] .inquiry-privacy { font-size: 11px; line-height: 1.5; margin: 8px 16px; color: inherit; }
+html[data-tenant="fullstack"] .inquiry-privacy a { text-decoration: underline; text-underline-offset: 2px; }
+html[data-tenant="fullstack"] .floating-brand .brand-logo-image,
+html[data-tenant="fullstack"] .footer-company .brand-logo-image,
+html[data-tenant="fullstack"] .site-splash__mark .brand-logo-image { filter: none; }
+@media (max-width: 600px) { html[data-tenant="fullstack"] .brand-logo-image { width: 146px; } html[data-tenant="fullstack"] .footer-company { gap: 20px; } }
+
+html[data-tenant="fullstack"] .floating-brand .brand-logo-image { width: 132px; height: 54px; }
+html[data-tenant="fullstack"] .floating-brand {
+  position: relative;
+  isolation: isolate;
+  animation: fullstack-header-brand-settle 800ms cubic-bezier(.76, 0, .24, 1) 1.72s both;
+}
+html[data-tenant="fullstack"] .floating-brand .brand-logo-image {
+  opacity: 0;
+  transform: scale(.45) translateY(10px);
+  filter: blur(10px) brightness(.75);
+  animation: fullstack-header-logo-reveal 900ms cubic-bezier(.16, 1, .3, 1) 1.82s forwards;
+}
+html[data-tenant="fullstack"] .floating-brand::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(183 239 102 / 22%), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(24px);
+  animation: fullstack-header-logo-glow 1200ms ease-out 2.1s forwards;
+}
+@keyframes fullstack-header-logo-reveal {
+  0% { opacity: 0; transform: scale(.45) translateY(10px); filter: blur(10px) brightness(.75); }
+  30% { opacity: 1; }
+  65% { opacity: 1; transform: scale(1.08) translateY(-2px); filter: blur(0) brightness(1); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0) brightness(1); }
+}
+@keyframes fullstack-header-brand-settle {
+  0% { transform: translateX(22px); }
+  100% { transform: translateX(0); }
+}
+@keyframes fullstack-header-logo-glow {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.6); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-tenant="fullstack"] .floating-brand,
+  html[data-tenant="fullstack"] .floating-brand .brand-logo-image,
+  html[data-tenant="fullstack"] .floating-brand::before {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  html[data-tenant="fullstack"] .floating-brand::before { display: none; }
+}
+@media (min-width: 761px) {
+  html[data-tenant="fullstack"] .floating-header {
+    width: min(940px, calc(100% - 56px));
+    height: 74px;
+    gap: 27px;
+    padding: 7px 9px 7px 18px;
+  }
+  html[data-tenant="fullstack"] .floating-brand {
+    margin-right: auto;
+  }
+  html[data-tenant="fullstack"] .floating-brand .brand-logo-image {
+    width: 156px;
+    height: 60px;
+  }
+  html[data-tenant="fullstack"] .floating-nav a {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  html[data-tenant="fullstack"] .nav-contact {
+    min-height: 50px;
+    padding-inline: 21px;
+    font-size: 14px !important;
+  }
+}
+@media (max-width: 700px) {
+  html[data-tenant="fullstack"] .info-hero { padding: 54px 24px; }
+  html[data-tenant="fullstack"] .info-hero h1 { font-size: clamp(32px, 9vw, 52px); line-height: 1.08; overflow-wrap: anywhere; letter-spacing: -0.04em; }
+  html[data-tenant="fullstack"] .info-story { padding: 28px 20px; }
+  html[data-tenant="fullstack"] .info-card { min-width: 0; padding: 26px 22px; }
+  html[data-tenant="fullstack"] .info-card h2 { font-size: 25px; line-height: 1.2; overflow-wrap: anywhere; }
+  html[data-tenant="fullstack"] .info-card p { font-size: 15px; line-height: 1.75; }
+  html[data-tenant="fullstack"] .info-stat strong { font-size: 38px; overflow-wrap: anywhere; }
+}
+
+html[data-tenant="fullstack"] .floating-brand .brand-logo-image--header {
+  width: 176px;
+  height: 40px;
+}
+html[data-tenant="fullstack"] button.proof-call-link,
+html[data-tenant="fullstack"] button.white-button,
+html[data-tenant="fullstack"] button.line-button,
+html[data-tenant="fullstack"] .info-header nav button,
+html[data-tenant="fullstack"] .info-hero__actions button,
+html[data-tenant="fullstack"] .lead-chat__ctas button {
+  font: inherit;
+  cursor: pointer;
+}
+
+html[data-tenant="fullstack"] .site-splash--simple {
+  display: grid;
+  place-items: center;
+  background: #071710;
+  cursor: default;
+}
+html[data-tenant="fullstack"] .site-splash--simple::before,
+html[data-tenant="fullstack"] .site-splash--simple .site-splash__cursor,
+html[data-tenant="fullstack"] .site-splash--simple .site-splash__grid {
+  display: none;
+}
+html[data-tenant="fullstack"] .site-splash__simple-lockup {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: 24px;
+  animation: fullstack-simple-splash-in 520ms cubic-bezier(.16, 1, .3, 1) both;
+}
+html[data-tenant="fullstack"] .site-splash__simple-lockup .brand-logo-image {
+  width: min(72vw, 520px);
+  height: auto;
+  opacity: 1;
+  filter: none;
+}
+html[data-tenant="fullstack"] .site-splash__simple-lockup p {
+  margin: 0;
+  color: rgba(255, 255, 255, .62);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-align: center;
+}
+html[data-tenant="fullstack"] .site-splash--simple .site-splash__progress {
+  width: min(72vw, 520px);
+  height: 1px;
+  top: auto;
+  right: auto;
+  bottom: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, .14);
+}
+html[data-tenant="fullstack"] .site-splash--simple .site-splash__progress span {
+  background: #b7ef66;
+  animation-duration: 900ms;
+}
+html[data-tenant="fullstack"] .site-splash--simple > button {
+  position: absolute;
+  right: 22px;
+  bottom: 18px;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, .58);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+@keyframes fullstack-simple-splash-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+html[data-tenant="fullstack"] .lead-chat__ctas button {
+  border: 0;
+}
+html[data-tenant="fullstack"] .info-header nav button,
+html[data-tenant="fullstack"] .info-hero__actions button {
+  background: none;
+  color: inherit;
+  text-decoration: none;
+}
+html[data-tenant="fullstack"] .booking-capture__whatsapp {
+  text-decoration: none;
+}
+html[data-tenant="fullstack"] .booking-capture {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+html[data-tenant="fullstack"] .booking-capture__scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(4, 12, 9, .62);
+  cursor: pointer;
+}
+html[data-tenant="fullstack"] .booking-capture__card {
+  position: relative;
+  width: min(100%, 440px);
+  display: grid;
+  gap: 14px;
+  padding: 28px;
+  border: 1px solid rgba(219, 231, 221, .8);
+  border-radius: 24px;
+  background: #fbf8ef;
+  color: #13281d;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .28);
+}
+html[data-tenant="fullstack"] .booking-capture__card > span {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+html[data-tenant="fullstack"] .booking-capture__card h2 {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+html[data-tenant="fullstack"] .booking-capture__card p {
+  margin: 0;
+  color: #5d6d62;
+  line-height: 1.55;
+}
+html[data-tenant="fullstack"] .booking-capture__card label {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+html[data-tenant="fullstack"] .booking-capture__card input {
+  width: 100%;
+  border: 1px solid rgba(19, 40, 29, .2);
+  border-radius: 14px;
+  background: #fffdf8;
+  padding: 14px 15px;
+  color: #13281d;
+  font: inherit;
+  letter-spacing: 0;
+  outline: none;
+}
+html[data-tenant="fullstack"] .booking-capture__card input:focus {
+  border-color: #ff4b26;
+  box-shadow: 0 0 0 3px rgba(255, 75, 38, .16);
+}
+html[data-tenant="fullstack"] .booking-capture__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(19, 40, 29, .14);
+  border-radius: 999px;
+  background: #fffdf8;
+  color: #13281d;
+  cursor: pointer;
+}
+html[data-tenant="fullstack"] .booking-capture__error {
+  color: #b72b18;
+  font-size: 13px;
+  font-weight: 700;
+}
+html[data-tenant="fullstack"] .booking-capture__whatsapp {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #2f704f;
+  font-weight: 800;
+}
+@media (min-width: 761px) {
+  html[data-tenant="fullstack"] .floating-brand .brand-logo-image--header {
+    width: 220px;
+    height: 52px;
+  }
+}
+@media (max-width: 600px) {
+  html[data-tenant="fullstack"] .booking-capture {
+    align-items: end;
+    padding: 12px;
+  }
+  html[data-tenant="fullstack"] .booking-capture__card {
+    padding: 24px 20px 20px;
+    border-radius: 22px;
+  }
+  html[data-tenant="fullstack"] .booking-capture__card h2 {
+    font-size: 29px;
+  }
+}
+
+html[data-tenant="fullstack"] .editorial-page {
+  min-height: 100vh;
+  background: #f6f2e8;
+  color: #13281d;
+  font-family: var(--font-geist-sans), sans-serif;
+}
+html[data-tenant="fullstack"] .editorial-header,
+html[data-tenant="fullstack"] .editorial-footer {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid #cad4c9;
+}
+html[data-tenant="fullstack"] .editorial-header > a { display: block; width: 210px; }
+html[data-tenant="fullstack"] .editorial-header nav,
+html[data-tenant="fullstack"] .editorial-footer nav { display: flex; flex-wrap: wrap; gap: 22px; }
+html[data-tenant="fullstack"] .editorial-header nav a,
+html[data-tenant="fullstack"] .editorial-footer a { color: inherit; font-size: 14px; font-weight: 700; text-decoration: none; }
+html[data-tenant="fullstack"] .editorial-hero {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 100px 0 72px;
+}
+html[data-tenant="fullstack"] .editorial-hero > span,
+html[data-tenant="fullstack"] .article-card > span { font: 12px/1.5 var(--font-geist-mono), monospace; color: #3f6b54; }
+html[data-tenant="fullstack"] .editorial-hero h1 { max-width: 980px; margin: 22px 0; font-size: clamp(48px, 8vw, 104px); line-height: .95; letter-spacing: -.065em; }
+html[data-tenant="fullstack"] .editorial-hero p { max-width: 660px; margin: 0; color: #596b60; font-size: 20px; line-height: 1.6; }
+html[data-tenant="fullstack"] .article-grid,
+html[data-tenant="fullstack"] .news-grid { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 0 0 100px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+html[data-tenant="fullstack"] .article-card,
+html[data-tenant="fullstack"] .news-card { min-width: 0; padding: 30px; border: 1px solid #c9d4c9; border-radius: 20px; background: #fbf9f2; }
+html[data-tenant="fullstack"] .article-card h2,
+html[data-tenant="fullstack"] .news-card h2 { margin: 22px 0 16px; font-size: 29px; line-height: 1.08; letter-spacing: -.035em; }
+html[data-tenant="fullstack"] .article-card h2 a,
+html[data-tenant="fullstack"] .news-card h2 a { color: inherit; text-decoration: none; }
+html[data-tenant="fullstack"] .article-card p,
+html[data-tenant="fullstack"] .news-card p { color: #5c6d62; font-size: 16px; line-height: 1.65; }
+html[data-tenant="fullstack"] .article-card > a,
+html[data-tenant="fullstack"] .news-card > a { display: inline-block; margin-top: 18px; color: #2f684d; font-weight: 750; }
+html[data-tenant="fullstack"] .news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html[data-tenant="fullstack"] .benchmark-desk { width: min(1180px, calc(100% - 40px)); margin: 0 auto 54px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+html[data-tenant="fullstack"] .benchmark-desk article { padding: 25px; border-top: 2px solid #3f6b54; background: #e7ede2; }
+html[data-tenant="fullstack"] .benchmark-desk span { color: #3f6b54; font: 11px/1.5 var(--font-geist-mono), monospace; }
+html[data-tenant="fullstack"] .benchmark-desk h2 { margin: 18px 0 10px; font-size: 24px; }
+html[data-tenant="fullstack"] .benchmark-desk p { color: #56685d; line-height: 1.6; }
+html[data-tenant="fullstack"] .benchmark-desk a { color: #245c42; font-weight: 750; }
+html[data-tenant="fullstack"] .news-card > div { display: flex; justify-content: space-between; gap: 20px; color: #3f6b54; font: 12px/1.5 var(--font-geist-mono), monospace; }
+html[data-tenant="fullstack"] .longform-article { width: min(820px, calc(100% - 40px)); margin: 0 auto; padding: 80px 0 110px; }
+html[data-tenant="fullstack"] .longform-article header > a { color: #2f684d; font-weight: 750; }
+html[data-tenant="fullstack"] .longform-article header > span { float: right; color: #68786e; font-size: 13px; }
+html[data-tenant="fullstack"] .longform-article h1 { margin: 30px 0 22px; font-size: clamp(46px, 7vw, 82px); line-height: .98; letter-spacing: -.06em; }
+html[data-tenant="fullstack"] .longform-article header > p { font-size: 21px; line-height: 1.6; color: #56685d; }
+html[data-tenant="fullstack"] .longform-article section { padding: 40px 0; border-top: 1px solid #cad4c9; }
+html[data-tenant="fullstack"] .longform-article section h2,
+html[data-tenant="fullstack"] .longform-article aside h2 { font-size: 32px; letter-spacing: -.035em; }
+html[data-tenant="fullstack"] .longform-article section p,
+html[data-tenant="fullstack"] .longform-article li { font-size: 18px; line-height: 1.75; color: #45594d; }
+html[data-tenant="fullstack"] .longform-article aside { display: grid; gap: 12px; padding: 30px; border-radius: 18px; background: #e5ecdf; }
+html[data-tenant="fullstack"] .longform-article aside a { color: #245c42; font-weight: 750; }
+html[data-tenant="fullstack"] .editorial-footer { border-top: 1px solid #cad4c9; border-bottom: 0; }
+html[data-tenant="fullstack"] .editorial-footer > div { display: grid; gap: 5px; }
+html[data-tenant="fullstack"] .editorial-footer span { color: #64746a; font-size: 13px; }
+@media (max-width: 800px) {
+  html[data-tenant="fullstack"] .editorial-header { align-items: flex-start; }
+  html[data-tenant="fullstack"] .editorial-header > a { width: 165px; }
+  html[data-tenant="fullstack"] .editorial-header nav { justify-content: flex-end; gap: 12px 16px; }
+  html[data-tenant="fullstack"] .editorial-hero { padding: 66px 0 48px; }
+  html[data-tenant="fullstack"] .editorial-hero p { font-size: 17px; }
+  html[data-tenant="fullstack"] .article-grid,
+  html[data-tenant="fullstack"] .news-grid,
+  html[data-tenant="fullstack"] .benchmark-desk { grid-template-columns: 1fr; }
+  html[data-tenant="fullstack"] .longform-article { padding-top: 52px; }
+  html[data-tenant="fullstack"] .longform-article header > span { float: none; display: block; margin-top: 18px; }
+  html[data-tenant="fullstack"] .editorial-footer { align-items: flex-start; }
+}
