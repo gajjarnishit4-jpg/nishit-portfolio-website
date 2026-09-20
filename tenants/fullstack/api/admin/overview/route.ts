@@ -74,7 +74,8 @@ function formatActivity(event: HeatmapRow) {
   }
   if (event.event_type === "scroll") {
     const depth = Number(event.metadata?.depth ?? 0);
-    return { label: `Read ${depth}% of ${page}`, detail: "Browsing the page" };
+    const section = typeof event.metadata?.section === "string" ? event.metadata.section.trim() : "";
+    return { label: `Read ${depth}% of ${page}`, detail: section ? `Reached: ${section}` : "Browsing the page" };
   }
   if (event.event_type === "click" || event.event_type === "outbound_click") {
     const label = String(event.metadata?.text || event.metadata?.tag || "page area");
@@ -170,21 +171,42 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
   }
 
   const sessionStats = Array.from(sessions.values())
-    .map((session) => ({
-      sessionId: session.id,
-      path: session.path,
-      device: session.device,
-      eventCount: session.eventCount,
-      clicks: session.clicks,
-      maxScroll: session.maxScroll,
-      timeSpentSeconds: Math.max(0, Math.round((session.last - session.first) / 1000)),
-      lastSeen: new Date(session.last).toISOString(),
-      startedAt: new Date(session.first).toISOString(),
-      visitorId: session.visitorId,
-      timeline: session.events
+    .map((session) => {
+      const timeline = session.events
         .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-        .slice(-30),
-    }))
+        .slice(-30);
+      const timeSpentSeconds = Math.max(0, Math.round((session.last - session.first) / 1000));
+      const actions = Array.from(
+        new Set(
+          timeline
+            .filter((event) => event.label.startsWith("Clicked:") || event.label.startsWith("Opened an external link:"))
+            .map((event) => event.label.replace(/^Clicked: |^Opened an external link: /, "")),
+        ),
+      );
+      const arrival = timeline.find((event) => event.label.startsWith("Visited "))?.label || `Visited ${session.path}`;
+      const summary = [
+        arrival,
+        session.maxScroll > 0 ? `read ${session.maxScroll}% of the page` : "",
+        actions.length ? `clicked ${actions.join(", ")}` : "",
+        timeSpentSeconds > 0 ? `spent ${durationLabel(timeSpentSeconds)} on the site` : "",
+      ]
+        .filter(Boolean)
+        .join(" · ");
+      return {
+        sessionId: session.id,
+        path: session.path,
+        device: session.device,
+        eventCount: session.eventCount,
+        clicks: session.clicks,
+        maxScroll: session.maxScroll,
+        timeSpentSeconds,
+        lastSeen: new Date(session.last).toISOString(),
+        startedAt: new Date(session.first).toISOString(),
+        visitorId: session.visitorId,
+        summary,
+        timeline,
+      };
+    })
     .sort((a, b) => new Date(b.lastSeen).getTime() - new Date(a.lastSeen).getTime());
 
   const totalTime = sessionStats.reduce((sum, session) => sum + session.timeSpentSeconds, 0);

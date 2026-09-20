@@ -73,6 +73,7 @@ type VisitorSessionStats = {
   timeSpentSeconds: number;
   lastSeen: string;
   startedAt: string;
+  summary: string;
   timeline: Array<{
     id: number;
     created_at: string;
@@ -356,10 +357,10 @@ export function AdminDashboard({ admin, view = "overview" }: { admin: string; vi
               <div className="admin-session-timeline-list">
                 {visitor.sessions.map((session) => (
                   <details key={session.sessionId} className="admin-session-timeline">
-                    <summary>
-                      <span>
-                        <strong>{session.device} session</strong>
-                        <small>{session.path} · {duration(session.timeSpentSeconds)} · {session.eventCount} events</small>
+                  <summary>
+                    <span>
+                      <strong>{session.device} session</strong>
+                      <small>{session.summary}</small>
                       </span>
                       <time>{timeAgo(session.lastSeen)} ago</time>
                     </summary>
@@ -398,8 +399,7 @@ export function AdminDashboard({ admin, view = "overview" }: { admin: string; vi
             <article key={session.sessionId}>
               <strong>{session.device} · {session.path}</strong>
               <span>
-                {duration(session.timeSpentSeconds)} · {session.eventCount} events · {session.clicks} clicks ·{" "}
-                {session.maxScroll}% scroll
+                {session.summary}
               </span>
               <small>{timeAgo(session.lastSeen)} ago</small>
             </article>

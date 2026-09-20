@@ -20,6 +20,23 @@ function elementMetadata(target: EventTarget | null): Metadata {
   };
 }
 
+function readingSection() {
+  const target = document.elementFromPoint(
+    Math.round(window.innerWidth / 2),
+    Math.round(window.innerHeight * 0.45),
+  );
+  const section = target?.closest("section, [data-track-section], header, footer, main");
+  if (!section) return null;
+  const heading = section.querySelector("h1, h2, h3")?.textContent?.replace(/\s+/g, " ").trim();
+  return (
+    section.getAttribute("data-track-section") ||
+    section.getAttribute("aria-label") ||
+    section.id ||
+    heading?.slice(0, 80) ||
+    null
+  );
+}
+
 function sendEvent(event: {
   eventType: string;
   x?: number;
@@ -104,7 +121,7 @@ export function VisitorTracker() {
       const bucket = Math.min(100, Math.floor(depth / 25) * 25);
       if (bucket === lastScrollBucket) return;
       lastScrollBucket = bucket;
-      sendEvent({ eventType: "scroll", metadata: { depth: bucket } });
+      sendEvent({ eventType: "scroll", metadata: { depth: bucket, section: readingSection() } });
     };
     const onFocus = (event: FocusEvent) => {
       const target = event.target instanceof HTMLElement ? event.target : null;
