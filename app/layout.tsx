@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import { headers } from "next/headers";
 import { FULLSTACK_ORIGIN, isFullstackHost } from "@/tenant-routing";
-import { OpenAIAdsPixel } from "@/tenants/fullstack/components/OpenAIAdsPixel";
 import "./globals.css";
 import "lenis/dist/lenis.css";
 import "./studio.css";
@@ -126,10 +125,9 @@ export default async function RootLayout({
             />
             <script
               dangerouslySetInnerHTML={{
-                __html: `!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;j.setAttribute("data-openai-ads-pixel","true");var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");try{oaiq("consent",localStorage.getItem("fullstack-openai-ads-consent")==="accepted")}catch(e){oaiq("consent",false)}oaiq("init",{pixelId:"LB7HC8FkK1wXF6pY2WKtN5",debug:${process.env.NODE_ENV === "development"}});`,
+                __html: `!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;j.setAttribute("data-openai-ads-pixel","true");var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");try{localStorage.setItem("fullstack-openai-ads-consent","accepted")}catch(e){}oaiq("consent",true);oaiq("init",{pixelId:"LB7HC8FkK1wXF6pY2WKtN5",debug:${process.env.NODE_ENV === "development"}});`,
               }}
             />
-            <OpenAIAdsPixel />
           </>
         ) : null}
         {children}

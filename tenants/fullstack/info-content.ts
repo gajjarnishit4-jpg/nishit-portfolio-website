@@ -135,7 +135,7 @@ export const infoPages: Record<string, InfoPageContent> = {
   "intro": "Privacy policy for The Fullstack Guys, Nishit Gajjar's independent Canadian freelance technology studio. Last updated: 19 September 2026. This notice describes information handled when you browse, ask a question, request a quote, or engage Nishit's digital services.",
   "accent": "#64e6c0",
   "stat": "Your choice",
-  "statLabel": "No sale of personal information; optional ad measurement requires your choice",
+  "statLabel": "No sale of personal information; ad measurement supports website improvement",
   "sections": [
     {
       "title": "01. Who is responsible",
@@ -168,7 +168,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     },
     {
       "title": "07. Advertising, cookies, and tracking choices",
-      "body": "The site offers optional OpenAI Ads measurement. The OpenAI Ads pixel remains opted out until you choose Allow measurement, and declining it does not prevent you from reading the site or contacting Nishit. If allowed, it may record page views and whether a project inquiry was created, together with advertising attribution, browser, device, requested page, and identifiers supported by the pixel. Inquiry form details may be normalized and hashed by the provider for matching. The site does not send a server-side OpenAI Ads conversion until a documented conversion endpoint is configured. You can clear the saved choice in browser storage. First-party activity such as clicks, scroll depth, session identifiers, and chat interactions may still be recorded for service operation, security, and site improvement."
+      "body": "The site uses OpenAI Ads measurement to understand which advertising leads to genuine project inquiries. It may record page views and completed inquiry actions, together with advertising attribution, browser, device, requested page, and identifiers supported by the pixel. Inquiry details may be normalized and hashed by the provider for matching. The site does not use this information to enrol you in unrelated promotional campaigns. First-party activity such as clicks, scroll depth, session identifiers, and chat interactions may also be recorded for service operation, security, and site improvement."
     },
     {
       "title": "08. Access to client systems",
@@ -317,7 +317,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     intro: "Cookie and browser-storage notice for The Fullstack Guys. Last updated: 19 September 2026.",
     accent: "#8bdcff",
     stat: "No ads",
-    statLabel: "OpenAI Ads measurement is optional and off until you allow it",
+    statLabel: "OpenAI Ads measurement supports website improvement",
     sections: [
       {
         title: "01. What this site uses",
@@ -325,7 +325,7 @@ export const infoPages: Record<string, InfoPageContent> = {
       },
       {
         title: "02. What this site does not use",
-        body: "The OpenAI Ads SDK is available on this site, but advertising measurement is opted out until you choose Allow measurement. If allowed, it can measure page views and completed inquiry actions and use supported identifiers for ad attribution and matching. Choosing Not now keeps optional OpenAI Ads measurement disabled. Inquiry details are not used to enrol you in email marketing."
+        body: "The site uses the OpenAI Ads SDK to measure page views and completed inquiry actions, using supported identifiers for advertising attribution and matching. Inquiry details are not used to enrol you in email marketing."
       },
       {
         title: "03. Your choices",
