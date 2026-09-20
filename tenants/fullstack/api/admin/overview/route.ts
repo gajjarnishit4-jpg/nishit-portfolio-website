@@ -23,45 +23,79 @@ function formatDevice(width?: number | null) {
   return "Desktop";
 }
 
+function readablePage(value?: string | null) {
+  const raw = value || "/";
+  let path = raw;
+  try {
+    const url = new URL(raw, "https://thefullstackguys.us");
+    path = url.pathname || "/";
+  } catch {
+    path = raw.split("?")[0] || "/";
+  }
+  if (path === "/") return "Home page";
+  return path
+    .split("/")
+    .filter(Boolean)
+    .map((part) => part.replace(/[-_]/g, " "))
+    .join(" · ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase()) || "Home page";
+}
+
+function trafficSource(event: HeatmapRow) {
+  const stored = event.metadata?.trafficSource;
+  if (typeof stored === "string" && stored.trim()) return stored;
+  try {
+    const parameters = new URL(event.path || "/", "https://thefullstackguys.us").searchParams;
+    if (parameters.has("oppref") || parameters.has("olref")) return "OpenAI Ads";
+    return parameters.get("utm_source");
+  } catch {
+    return null;
+  }
+}
+
+function durationLabel(seconds: number) {
+  if (seconds < 60) return `${seconds} second${seconds === 1 ? "" : "s"}`;
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes} minute${minutes === 1 ? "" : "s"}`;
+}
+
+function isMeaningfulActivity(event: HeatmapRow) {
+  return !["move", "engagement", "visibility", "web_vital"].includes(event.event_type);
+}
+
 function formatActivity(event: HeatmapRow) {
-  const path = event.path || "/";
+  const page = readablePage(event.path);
+  const source = trafficSource(event);
   if (event.event_type === "pageview") {
-    return { label: `Opened ${path}`, detail: `${formatDevice(event.viewport_width)} session started` };
+    return {
+      label: `Visited ${page}${source ? ` from ${source}` : ""}`,
+      detail: `${formatDevice(event.viewport_width)} visitor`,
+    };
   }
   if (event.event_type === "scroll") {
     const depth = Number(event.metadata?.depth ?? 0);
-    return { label: `Scrolled ${depth}%`, detail: `Reading ${path}` };
+    return { label: `Read ${depth}% of ${page}`, detail: "Browsing the page" };
   }
   if (event.event_type === "click" || event.event_type === "outbound_click") {
     const label = String(event.metadata?.text || event.metadata?.tag || "page area");
-    const destination = String(event.metadata?.href || path);
     return {
-      label: `${event.event_type === "outbound_click" ? "Opened" : "Clicked"} ${label}`,
-      detail: event.event_type === "outbound_click" ? destination : `Interaction on ${path}`,
+      label: `${event.event_type === "outbound_click" ? "Opened an external link" : "Clicked"}: ${label}`,
+      detail: `On ${page}`,
     };
   }
-  if (event.event_type === "move") {
-    return { label: `Explored ${path}`, detail: `${formatDevice(event.viewport_width)} pointer activity` };
-  }
-  if (event.event_type === "engagement") {
-    return { label: `Active on ${path}`, detail: `${Math.round(Number(event.metadata?.durationMs || 0) / 1000)}s engaged` };
-  }
   if (event.event_type === "page_exit") {
-    return { label: `Left ${path}`, detail: `${Math.round(Number(event.metadata?.durationMs || 0) / 1000)}s session duration` };
+    return {
+      label: `Left ${page}`,
+      detail: `Spent ${durationLabel(Math.round(Number(event.metadata?.durationMs || 0) / 1000))} on the site`,
+    };
   }
   if (event.event_type === "form_start" || event.event_type === "form_submit") {
-    return { label: event.event_type === "form_start" ? "Started a form" : "Submitted a form", detail: String(event.metadata?.form || path) };
-  }
-  if (event.event_type === "web_vital") {
-    return { label: `${String(event.metadata?.metric || "Performance")} measured`, detail: `${String(event.metadata?.value || "0")} on ${path}` };
+    return { label: event.event_type === "form_start" ? "Started a form" : "Submitted a form", detail: `On ${page}` };
   }
   if (event.event_type === "client_error") {
-    return { label: "Browser error", detail: String(event.metadata?.message || path) };
+    return { label: "Browser error", detail: `While viewing ${page}` };
   }
-  if (event.event_type === "visibility") {
-    return { label: `Page ${String(event.metadata?.state || "changed")}`, detail: path };
-  }
-  return { label: event.event_type, detail: path };
+  return { label: event.event_type, detail: page };
 }
 
 function getVisitorKey(event: HeatmapRow, sessionId: string) {
@@ -70,6 +104,7 @@ function getVisitorKey(event: HeatmapRow, sessionId: string) {
 }
 
 function buildAnalytics(heatmap: HeatmapRow[]) {
+  const meaningfulEvents = heatmap.filter(isMeaningfulActivity);
   const sessions = new Map<
     string,
     {
@@ -92,7 +127,7 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
   >();
   const pageCounts = new Map<string, number>();
 
-  for (const event of heatmap) {
+  for (const event of meaningfulEvents) {
     const sessionId = event.session_id || `event-${event.id}`;
     const visitorId = getVisitorKey(event, sessionId);
     const timestamp = new Date(event.created_at).getTime();
@@ -107,7 +142,7 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
         clicks: 0,
         maxScroll: 0,
         device: formatDevice(event.viewport_width),
-        path: event.path || "/",
+        path: readablePage(event.path),
         events: [],
       };
 
@@ -115,7 +150,7 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
     current.first = Math.min(current.first, timestamp);
     current.last = Math.max(current.last, timestamp);
     current.eventCount += 1;
-    current.path = event.path || current.path;
+    current.path = readablePage(event.path) || current.path;
     current.events.push({
       id: event.id,
       created_at: event.created_at,
@@ -129,7 +164,7 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
     sessions.set(sessionId, current);
 
     if (event.event_type === "pageview") {
-      const path = event.path || "/";
+      const path = readablePage(event.path);
       pageCounts.set(path, (pageCounts.get(path) || 0) + 1);
     }
   }
@@ -217,7 +252,7 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
       .map(([path, count]) => ({ path, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 6),
-    recentActivity: heatmap.slice(0, 40).map((event) => ({
+    recentActivity: meaningfulEvents.slice(0, 40).map((event) => ({
       id: event.id,
       created_at: event.created_at,
       ...formatActivity(event),

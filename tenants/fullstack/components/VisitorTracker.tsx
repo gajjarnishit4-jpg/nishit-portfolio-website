@@ -26,9 +26,15 @@ function sendEvent(event: {
   y?: number;
   metadata?: Metadata;
 }, useBeacon = false) {
+  const currentUrl = new URL(window.location.href);
+  const trafficSource =
+    currentUrl.searchParams.has("oppref") || currentUrl.searchParams.has("olref")
+      ? "OpenAI Ads"
+      : currentUrl.searchParams.get("utm_source") || null;
   const payload = JSON.stringify({
     sessionId: getBrowserSessionId(),
-    path: `${window.location.pathname}${window.location.search}`,
+    // Do not retain opaque campaign reference tokens in visitor analytics.
+    path: currentUrl.pathname,
     pageTitle: document.title,
     referrer: document.referrer || null,
     occurredAt: new Date().toISOString(),
@@ -42,6 +48,7 @@ function sendEvent(event: {
     metadata: {
       eventId: crypto.randomUUID(),
       visitorId: getBrowserVisitorId(),
+      trafficSource,
       connection: (navigator as Navigator & { connection?: { effectiveType?: string } }).connection?.effectiveType || null,
       ...(event.metadata || {}),
     },
@@ -130,7 +137,7 @@ export function VisitorTracker() {
       if (document.visibilityState === "visible") {
         sendEvent({ eventType: "engagement", metadata: { durationMs: Date.now() - startedAt, scrollDepth: lastScrollBucket } });
       }
-    }, 15000);
+    }, 60000);
 
     const observers: PerformanceObserver[] = [];
     if ("PerformanceObserver" in window) {
