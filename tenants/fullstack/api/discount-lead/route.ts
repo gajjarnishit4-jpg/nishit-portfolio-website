@@ -31,18 +31,18 @@ export async function POST(request: NextRequest) {
   const phone = clean(body.phone);
   const niche = clean(body.niche);
 
-  if (!email || !phone) {
+  if (!name || !email || !phone || !niche) {
     return NextResponse.json(
-      { error: "Email and phone are required for the discount code." },
+      { error: "Name, email, phone, and business niche are required for the discount code." },
       { status: 400 },
     );
   }
 
   const lead: LeadProfile = {
-    name: name || null,
+    name,
     email,
     phone,
-    niche: niche || null,
+    niche,
     budget: "30% off new digital project offer",
     projectType: "New digital project discount lead",
     summary: `Requested ${DISCOUNT_CODE} for a new web, software, app or commerce project${niche ? ` in ${niche}` : ""}.`,
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
   const transcript: ChatMessage[] = [
     {
       role: "user",
-      content: `30% off popup lead. Name: ${name || "not provided"}. Email: ${email}. Phone: ${phone}. Niche: ${niche || "not provided"}.`,
+      content: `30% off popup lead. Name: ${name}. Email: ${email}. Phone: ${phone}. Niche: ${niche}.`,
     },
   ];
 

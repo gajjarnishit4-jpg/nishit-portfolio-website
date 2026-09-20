@@ -14,12 +14,25 @@ type SaveLeadInput = {
 
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+function hasValidName(value?: string | null) {
+  return Boolean(value?.trim() && value.trim().length >= 2);
+}
+
+function hasValidEmail(value?: string | null) {
+  return Boolean(value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()));
+}
+
+function hasValidPhone(value?: string | null) {
+  return Boolean(value && value.replace(/\D/g, "").length >= 7);
+}
+
 export function shouldStoreLead(lead: LeadProfile) {
-  return Boolean(
-    lead.email ||
-      lead.phone ||
-      (lead.intent === "high" && (lead.budget || lead.timeline || lead.company)) ||
-      (lead.score || 0) >= 55,
+  // AI intent and score are useful for prioritizing a real inquiry, but they
+  // are never evidence that a visitor has actually become a contactable lead.
+  return (
+    hasValidName(lead.name) &&
+    hasValidEmail(lead.email) &&
+    hasValidPhone(lead.phone)
   );
 }
 
