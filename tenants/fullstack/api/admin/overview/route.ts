@@ -265,10 +265,10 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
     totalVisitors: visitorGroups.length,
     deviceCounts,
     avgTimeSpentSeconds: sessionStats.length ? Math.round(totalTime / sessionStats.length) : 0,
-    sessionStats: sessionStats.slice(0, 12),
-    visitors: visitorGroups.slice(0, 20).map((visitor) => ({
+    sessionStats,
+    visitors: visitorGroups.map((visitor) => ({
       ...visitor,
-      sessions: visitor.sessions.slice(0, 8),
+      sessions: visitor.sessions,
     })),
     topPages: Array.from(pageCounts.entries())
       .map(([path, count]) => ({ path, count }))

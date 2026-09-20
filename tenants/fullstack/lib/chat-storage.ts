@@ -150,7 +150,9 @@ export async function listAdminChatData() {
       .not("path", "like", "/admin%")
       .not("path", "like", "/api/admin%")
       .order("occurred_at", { ascending: false })
-      .limit(1000),
+      // Visitor summaries are built from these events. Keep enough history for
+      // the dashboard's visitor total rather than silently omitting older visits.
+      .limit(10000),
   ]);
   throwIfSupabaseError(sessionsResult.error);
   throwIfSupabaseError(eventsResult.error);
