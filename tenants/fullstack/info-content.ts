@@ -19,7 +19,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     eyebrow: "ABOUT NISHIT GAJJAR",
     title: "One independent full-stack freelancer for projects that need more than a template.",
     intro:
-      "The Fullstack Guys is Nishit Gajjar's personal portfolio and project brand. Nishit works directly with founders and businesses that care about product, taste, speed, and practical results.",
+      "The Fullstack Guys is Nishit Gajjar's independent Canadian freelance technology studio and project brand. Nishit works directly with founders and businesses that care about product, taste, speed, and practical results.",
     accent: "#b7ef66",
     stat: "MR.",
     statLabel: "Nishit Gajjar — independent freelancer behind The Fullstack Guys",
@@ -124,22 +124,22 @@ export const infoPages: Record<string, InfoPageContent> = {
       {
         title: "How to reach Nishit",
         body:
-          "Use the website inquiry form, WhatsApp, or discovery-call booking flow to contact Nishit Gajjar directly. The Fullstack Guys is Nishit's personal portfolio and project brand, not a separate company or agency.",
+          "Use the website inquiry form, WhatsApp, or discovery-call booking flow to contact Nishit Gajjar directly. The Fullstack Guys is Nishit's independent Canadian freelance technology studio and project brand; it is not an incorporated company unless a written invoice or agreement expressly states otherwise.",
       },
     ],
   },
   "privacy-policy": {
   "slug": "privacy-policy",
   "eyebrow": "PRIVACY POLICY",
-  "title": "Your information. Clear purposes. One named individual.",
-  "intro": "Privacy policy for The Fullstack Guys, Nishit Gajjar's personal freelancer website. Last updated: 19 September 2026. This notice describes information handled when you browse, ask a question, request a quote, or engage Nishit's digital services.",
+  "title": "Your information. Clear purposes. One named Canadian freelancer.",
+  "intro": "Privacy policy for The Fullstack Guys, Nishit Gajjar's independent Canadian freelance technology studio. Last updated: 19 September 2026. This notice describes information handled when you browse, ask a question, request a quote, or engage Nishit's digital services.",
   "accent": "#64e6c0",
   "stat": "Your choice",
-  "statLabel": "No sale of personal information; no optional ad tracking in this version",
+  "statLabel": "No sale of personal information; optional ad measurement requires your choice",
   "sections": [
     {
       "title": "01. Who is responsible",
-      "body": "Nishit Gajjar is the individual freelancer responsible for this website and its inquiry data. The Fullstack Guys is Nishit's personal portfolio and project brand, not a separate company or agency. For privacy requests, corrections, complaints, or project support, contact Nishit through the website inquiry form or WhatsApp and state that your request concerns The Fullstack Guys."
+      "body": "Nishit Gajjar is the Canadian independent freelancer responsible for this website and its inquiry data. The Fullstack Guys is his freelance technology studio and project brand, not a separate incorporated entity unless a written invoice or agreement says otherwise. For privacy requests, corrections, complaints, or project support, contact Nishit through the website inquiry form or WhatsApp and state that your request concerns The Fullstack Guys."
     },
     {
       "title": "02. Information you provide",
@@ -168,7 +168,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     },
     {
       "title": "07. Advertising, cookies, and tracking choices",
-      "body": "This version does not load Meta or OpenAI advertising pixels or send server-side advertising conversion events. The site may record first-party activity such as page views, clicks, scroll depth, approximate device type, session identifiers, requested paths, and chat or inquiry interactions to understand performance, prevent abuse, and improve service delivery. Seeing or clicking an ad on another platform is governed by that platform’s privacy settings. If optional third-party advertising measurement is introduced later, this notice will identify the data and recipients, and consent will be obtained where required before activation. Declining optional advertising tracking must not prevent you from reading policies or contacting Nishit."
+      "body": "The site offers optional OpenAI Ads measurement. The OpenAI Ads pixel remains opted out until you choose Allow measurement, and declining it does not prevent you from reading the site or contacting Nishit. If allowed, it may record page views and whether a project inquiry was created, together with advertising attribution, browser, device, requested page, and identifiers supported by the pixel. Inquiry form details may be normalized and hashed by the provider for matching. The site does not send a server-side OpenAI Ads conversion until a documented conversion endpoint is configured. You can clear the saved choice in browser storage. First-party activity such as clicks, scroll depth, session identifiers, and chat interactions may still be recorded for service operation, security, and site improvement."
     },
     {
       "title": "08. Access to client systems",
@@ -176,7 +176,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     },
     {
       "title": "09. Storage, transfers, and disclosure",
-      "body": "Information may be processed in India or in countries where selected providers operate. Before using providers for personal data, Nishit assesses the purpose, access requirements, and applicable transfer safeguards. Information may be disclosed when legally required, to respond to a valid legal request, or when necessary to investigate misuse or protect rights. Not all provider systems are necessarily located in India."
+      "body": "Nishit operates from Canada. Information may be processed in Canada or in countries where selected providers operate, including where cloud, database, AI, or infrastructure services are hosted. Before using providers for personal data, Nishit assesses the purpose, access requirements, and appropriate safeguards. Information may be disclosed when legally required, to respond to a valid legal request, or when necessary to investigate misuse or protect rights."
     },
     {
       "title": "10. Retention and deletion",
@@ -184,7 +184,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     },
     {
       "title": "11. Your choices and requests",
-      "body": "You may ask what personal information Nishit holds about you, request correction or deletion, withdraw consent for consent-based uses, ask to stop promotional contact, or raise a grievance. Nishit may request proportionate verification before disclosing or changing a record; do not send identity documents unless a secure, necessary method is agreed. Withdrawal does not invalidate earlier lawful processing or prevent records required by law from being retained. Applicable rights, procedures, and escalation options depend on the law in force. Contact Nishit using the details in this policy; you may also approach an authority or forum available under applicable law."
+      "body": "You may ask what personal information Nishit holds about you, request correction or deletion, withdraw consent for consent-based uses, ask to stop promotional contact, or raise a concern. Nishit may request proportionate verification before disclosing or changing a record; do not send identity documents unless a secure, necessary method is agreed. Withdrawal does not invalidate earlier lawful processing or prevent records required by law from being retained. Canadian privacy rights and procedures can vary by province and by the nature of the service. Contact Nishit first; you may also approach a privacy authority or other forum available under applicable law."
     },
     {
       "title": "12. Security and children",
@@ -207,7 +207,7 @@ export const infoPages: Record<string, InfoPageContent> = {
   "sections": [
     {
       "title": "01. Who supplies the service",
-      "body": "Nishit Gajjar supplies the services personally as an independent freelancer. The Fullstack Guys is Nishit's portfolio and project brand, not a separate company or agency."
+      "body": "Nishit Gajjar supplies services personally as an independent Canadian freelancer. The Fullstack Guys is his freelance technology studio and project brand, not a separate incorporated company unless a written invoice or agreement says otherwise."
     },
     {
       "title": "02. Before work begins",
@@ -223,7 +223,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     },
     {
       "title": "05. External costs and marketplace orders",
-      "body": "Domains, licenses, hosting, themes, platform charges, and other third-party costs follow their provider’s terms. Nishit will identify costs already committed with your approval and pursue any available recovery where appropriate. Fiverr or Upwork orders also follow the platform’s dispute and payment process. Neither platform rules nor this policy remove non-excludable rights."
+      "body": "Domains, licenses, hosting, themes, platform charges, sales taxes, and other third-party costs follow their provider’s terms. Any applicable GST/HST or other taxes will be identified on the quote or invoice where required. Nishit will identify costs already committed with your approval and pursue any available recovery where appropriate. Fiverr or Upwork orders also follow the platform’s dispute and payment process. Neither platform rules nor this policy remove non-excludable rights."
     },
     {
       "title": "06. Requests and payment of refunds",
@@ -246,7 +246,7 @@ export const infoPages: Record<string, InfoPageContent> = {
   "sections": [
     {
       "title": "01. Individual identity and contracting party",
-      "body": "Nishit Gajjar is the individual freelancer operating this website and supplying direct services. The Fullstack Guys is Nishit's personal portfolio and project brand, not a separate company, agency, or contracting entity. Quotes, agreements, payment instructions, and invoices for direct projects identify Nishit Gajjar as the service provider."
+      "body": "Nishit Gajjar is the Canadian independent freelancer operating this website and supplying direct services. The Fullstack Guys is his freelance technology studio and project brand, not a separate incorporated company unless a written invoice or agreement says otherwise. Quotes, agreements, payment instructions, and invoices for direct projects identify Nishit Gajjar as the service provider."
     },
     {
       "title": "02. Website use and eligibility",
@@ -258,7 +258,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     },
     {
       "title": "04. Prices and payment identity",
-      "body": "Displayed starting prices are indicative starting points in USD, not a promise that every project is available at that price. Before payment, the written quote must state the final scope, currency, applicable charges, due dates, and recurring third-party costs. Verify that the quote, invoice, and authorized payment beneficiary identify Nishit Gajjar; query inconsistent instructions before paying. The website chat does not collect card numbers or banking passwords."
+      "body": "Displayed starting prices are indicative starting points in USD, not a promise that every project is available at that price. Before payment, the written quote must state the final scope, currency, applicable taxes or charges, due dates, and recurring third-party costs. Verify that the quote, invoice, and authorized payment beneficiary identify Nishit Gajjar; query inconsistent instructions before paying. The website chat does not collect card numbers or banking passwords."
     },
     {
       "title": "05. Offers and discounts",
@@ -305,9 +305,59 @@ export const infoPages: Record<string, InfoPageContent> = {
       "body": "Nishit may suspend work for material non-payment, security risks, unlawful requests, or a material contractual breach, with notice and a reasonable opportunity to resolve the issue where practicable. Urgent security issues may require immediate action. Ending a project does not erase refund obligations, accrued payment obligations, confidentiality, or rights in already paid deliverables. Any handoff or unused funds will be addressed fairly under the project agreement and applicable law."
     },
     {
-      "title": "16. Complaints, governing law, and changes",
-      "body": "For privacy requests, corrections, complaints, or project support, contact Nishit Gajjar through the website inquiry form or WhatsApp and state that your request concerns The Fullstack Guys. Indian law applies, subject to mandatory protections and jurisdiction rules that apply to you. Written discussion is encouraged first, but this does not restrict access to a competent court, consumer forum, regulator, or other remedy available by law. Updates apply prospectively; changes to a signed project require agreement and do not silently rewrite previously accepted terms."
+      "title": "16. Complaints, Canadian law, and changes",
+      "body": "For privacy requests, corrections, complaints, or project support, contact Nishit Gajjar through the website inquiry form or WhatsApp and state that your request concerns The Fullstack Guys. Unless a signed project agreement specifies otherwise, these terms are governed by applicable Canadian federal law and the laws of the province or territory in which Nishit carries on business, subject to mandatory protections and jurisdiction rules that apply to you. Written discussion is encouraged first, but this does not restrict access to a competent court, consumer forum, regulator, or other remedy available by law. Updates apply prospectively; changes to a signed project require agreement and do not silently rewrite previously accepted terms."
     }
   ]
 },
+  "cookie-policy": {
+    slug: "cookie-policy",
+    eyebrow: "COOKIE NOTICE",
+    title: "Essential site storage, explained plainly.",
+    intro: "Cookie and browser-storage notice for The Fullstack Guys. Last updated: 19 September 2026.",
+    accent: "#8bdcff",
+    stat: "No ads",
+    statLabel: "OpenAI Ads measurement is optional and off until you allow it",
+    sections: [
+      {
+        title: "01. What this site uses",
+        body: "The site uses necessary cookies and similar browser storage to run features you request, including admin authentication, chat-session continuity, motion preferences, and dismissed interface panels. Server logs and first-party analytics may record technical activity such as pages viewed, clicks, performance, and security events."
+      },
+      {
+        title: "02. What this site does not use",
+        body: "The OpenAI Ads SDK is available on this site, but advertising measurement is opted out until you choose Allow measurement. If allowed, it can measure page views and completed inquiry actions and use supported identifiers for ad attribution and matching. Choosing Not now keeps optional OpenAI Ads measurement disabled. Inquiry details are not used to enrol you in email marketing."
+      },
+      {
+        title: "03. Your choices",
+        body: "You can control or clear cookies and local storage in your browser settings. Clearing storage may sign you out of protected areas or reset chat and display preferences. Blocking essential storage can prevent requested features from working. For information about personal information and cross-border processing, read the Privacy Policy."
+      }
+    ]
+  },
+  "legal-notice": {
+    slug: "legal-notice",
+    eyebrow: "LEGAL NOTICE",
+    title: "Canadian freelance technology services, with a clear contracting identity.",
+    intro: "Legal notice for The Fullstack Guys. Last updated: 19 September 2026. This notice is general information and does not replace a written project agreement.",
+    accent: "#c8b5ff",
+    stat: "Canada",
+    statLabel: "Independent freelance technology studio",
+    sections: [
+      {
+        title: "01. Service provider",
+        body: "Nishit Gajjar operates The Fullstack Guys as an independent Canadian freelance technology studio. The Fullstack Guys is a business and portfolio brand. It is not represented as a separate incorporated company unless a written quote, invoice, or agreement expressly identifies an incorporated entity."
+      },
+      {
+        title: "02. Services and project documents",
+        body: "Services may include web development, software, e-commerce, design, automation, AI-assisted workflows, and related technical consulting. A project begins only when Nishit and the client agree in writing on scope, fees, payment milestones, timelines, deliverables, intellectual-property terms, and support. The written project agreement takes priority over general website information."
+      },
+      {
+        title: "03. Taxes, invoices, and contact",
+        body: "Quotes and invoices identify the service provider, currency, applicable taxes, payment instructions, and project terms. GST/HST or other taxes are charged only where applicable and are shown on the applicable quote or invoice. For legal, billing, privacy, or service questions, use the website contact form or WhatsApp and identify the relevant project or policy."
+      },
+      {
+        title: "04. Governing framework",
+        body: "Services are offered from Canada. Applicable Canadian federal law and the law of the province or territory in which Nishit carries on business apply, subject to mandatory consumer, privacy, and jurisdiction rules and any written agreement that validly specifies otherwise. Nothing here removes rights that cannot legally be waived."
+      }
+    ]
+  },
 };

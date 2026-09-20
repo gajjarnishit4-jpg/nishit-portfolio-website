@@ -1394,9 +1394,9 @@ export default function Home() {
             <p>
               NISHIT GAJJAR
               <br />
-              Independent full-stack freelancer
+              Independent Canadian full-stack freelancer
               <br />
-              The Fullstack Guys — Nishit&apos;s personal portfolio and project studio
+              The Fullstack Guys — Nishit&apos;s freelance technology studio
             </p>
             <Link href="/?contact=1">
               Nishit Gajjar support <ArrowUpRight size={16} />
@@ -1405,8 +1405,10 @@ export default function Home() {
           <div className="footer-legal">
             <div>
               <Link href="/privacy-policy">Privacy</Link>
+              <Link href="/cookie-policy">Cookie notice</Link>
               <Link href="/terms-of-use">Terms of use</Link>
               <Link href="/refund-policy">Refund policy</Link>
+              <Link href="/legal-notice">Legal notice</Link>
               <Link href="/support">Support</Link>
               <Link href="/admin">Admin</Link>
             </div>

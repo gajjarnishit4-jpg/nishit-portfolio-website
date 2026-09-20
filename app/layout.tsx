@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import { headers } from "next/headers";
 import { FULLSTACK_ORIGIN, isFullstackHost } from "@/tenant-routing";
+import { OpenAIAdsPixel } from "@/tenants/fullstack/components/OpenAIAdsPixel";
 import "./globals.css";
 import "lenis/dist/lenis.css";
 import "./studio.css";
@@ -110,18 +111,26 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}
       >
         {fullstack ? (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@graph": [
-                  { "@type": "Person", "@id": `${FULLSTACK_ORIGIN}/#nishit-gajjar`, name: "Nishit Gajjar", url: FULLSTACK_ORIGIN, jobTitle: "Independent Full-Stack Freelancer", sameAs: ["https://www.fiverr.com/s/m5qDeDN", "https://www.upwork.com/freelancers/~016de1057b0e843c6b"] },
-                  { "@type": "WebSite", "@id": `${FULLSTACK_ORIGIN}/#website`, url: FULLSTACK_ORIGIN, name: "The Fullstack Guys", publisher: { "@id": `${FULLSTACK_ORIGIN}/#nishit-gajjar` }, inLanguage: "en" },
-                ],
-              }).replace(/</g, "\\u003c"),
-            }}
-          />
+          <>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@graph": [
+                    { "@type": "Person", "@id": `${FULLSTACK_ORIGIN}/#nishit-gajjar`, name: "Nishit Gajjar", url: FULLSTACK_ORIGIN, jobTitle: "Independent Full-Stack Freelancer", sameAs: ["https://www.fiverr.com/s/m5qDeDN", "https://www.upwork.com/freelancers/~016de1057b0e843c6b"] },
+                    { "@type": "WebSite", "@id": `${FULLSTACK_ORIGIN}/#website`, url: FULLSTACK_ORIGIN, name: "The Fullstack Guys", publisher: { "@id": `${FULLSTACK_ORIGIN}/#nishit-gajjar` }, inLanguage: "en" },
+                  ],
+                }).replace(/</g, "\\u003c"),
+              }}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;j.setAttribute("data-openai-ads-pixel","true");var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");try{oaiq("consent",localStorage.getItem("fullstack-openai-ads-consent")==="accepted")}catch(e){oaiq("consent",false)}oaiq("init",{pixelId:"LB7HC8FkK1wXF6pY2WKtN5",debug:${process.env.NODE_ENV === "development"}});`,
+              }}
+            />
+            <OpenAIAdsPixel />
+          </>
         ) : null}
         {children}
       </body>

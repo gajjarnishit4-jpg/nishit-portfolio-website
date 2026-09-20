@@ -375,3 +375,53 @@ html[data-tenant="fullstack"] .editorial-footer span { color: #64746a; font-size
   html[data-tenant="fullstack"] .longform-article header > span { float: none; display: block; margin-top: 18px; }
   html[data-tenant="fullstack"] .editorial-footer { align-items: flex-start; }
 }
+/* Optional advertising measurement consent */
+.ads-consent {
+  position: fixed;
+  z-index: 10000;
+  right: 18px;
+  bottom: 18px;
+  width: min(430px, calc(100vw - 36px));
+  padding: 18px;
+  border: 1px solid #324638;
+  border-radius: 18px;
+  background: #102218f2;
+  color: #fff;
+  box-shadow: 0 22px 70px #07120c4d;
+  backdrop-filter: blur(18px);
+}
+.ads-consent p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.ads-consent div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 14px;
+}
+.ads-consent button {
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid #ffffff42;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.ads-consent button:last-child {
+  border-color: #fff;
+  background: #fff;
+  color: #102218;
+}
+@media (max-width: 600px) {
+  .ads-consent {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+  }
+  .ads-consent div { justify-content: stretch; }
+  .ads-consent button { flex: 1; }
+}

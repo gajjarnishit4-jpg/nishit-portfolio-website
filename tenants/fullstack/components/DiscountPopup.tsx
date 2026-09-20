@@ -6,6 +6,7 @@ import {
   DISCOUNT_CODE,
 } from "@/tenants/fullstack/lib/business-context";
 import { getBrowserSessionId } from "@/tenants/fullstack/lib/browser-session";
+import { createOpenAIAdsEventId, hasOpenAIAdsConsent, measureOpenAIAds } from "@/tenants/fullstack/lib/openai-ads";
 
 type DiscountResponse = {
   code?: string;
@@ -147,7 +148,8 @@ export function DiscountPopup({
     setIsSubmitting(true);
 
     try {
-
+      const adsConsent = hasOpenAIAdsConsent();
+      const eventId = adsConsent ? createOpenAIAdsEventId() : undefined;
       const response = await fetch("/api/discount-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -158,6 +160,8 @@ export function DiscountPopup({
           niche: values.niche.trim(),
           page: window.location.pathname,
           sessionId: getBrowserSessionId(),
+          eventId,
+          adsConsent,
         }),
       });
       const data = (await response.json()) as DiscountResponse;
@@ -166,6 +170,7 @@ export function DiscountPopup({
         return;
       }
       setClaimedCode(data.code || DISCOUNT_CODE);
+      if (eventId) measureOpenAIAds("lead_created", { type: "customer_action" }, eventId);
       rememberPopupChoice();
     } catch {
       setError("Connection dipped. Try once more or contact Nishit directly.");

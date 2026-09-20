@@ -10,6 +10,7 @@ import {
 } from "@/tenants/fullstack/lib/business-context";
 import { openBookingCapture } from "@/tenants/fullstack/components/BookingCapture";
 import { getBrowserSessionId } from "@/tenants/fullstack/lib/browser-session";
+import { trackOpenAILead } from "@/tenants/fullstack/lib/openai-ads";
 import {
   reconcileChatHistory,
   splitAssistantContent,
@@ -132,7 +133,7 @@ function AssistantMessageContent({ content }: { content: string }) {
         );
       })}
       <div className="lead-chat__ctas" aria-label="Contact Nishit">
-        <a href={`tel:+${phoneNumber}`}>Call now</a>
+        <a href={`tel:+${phoneNumber}`} onClick={() => trackOpenAILead("call_now")}>Call now</a>
         <button type="button" onClick={openBookingCapture}>
           Book a call
         </button>
@@ -140,6 +141,7 @@ function AssistantMessageContent({ content }: { content: string }) {
           href={`https://wa.me/${phoneNumber}`}
           target="_blank"
           rel="noreferrer"
+          onClick={() => trackOpenAILead("whatsapp")}
         >
           WhatsApp
         </a>
@@ -328,7 +330,10 @@ export function LeadChat({ open, onOpenChange }: LeadChatProps) {
       ]);
       if (data.sessionId && data.sessionId !== sessionId)
         setSessionId(data.sessionId);
-      if (data.saved) setLeadSaved(true);
+      if (data.saved) {
+        if (!leadSaved) trackOpenAILead("qualified_chat_lead");
+        setLeadSaved(true);
+      }
     } catch {
       setMessages([
         ...nextMessages,

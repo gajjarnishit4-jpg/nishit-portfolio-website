@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, X } from "lucide-react";
 import { CALENDAR_LINK, WHATSAPP_NUMBER } from "@/tenants/fullstack/lib/business-context";
 import { getBrowserSessionId } from "@/tenants/fullstack/lib/browser-session";
+import { createOpenAIAdsEventId, hasOpenAIAdsConsent, measureOpenAIAds, trackOpenAILead } from "@/tenants/fullstack/lib/openai-ads";
 
 const BOOKING_EVENT = "fullstack-guys-booking-request";
 const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, "")}`;
@@ -75,6 +76,8 @@ export function BookingCapture() {
 
     setSubmitting(true);
     try {
+      const adsConsent = hasOpenAIAdsConsent();
+      const eventId = adsConsent ? createOpenAIAdsEventId() : undefined;
       const response = await fetch("/api/booking-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,6 +87,8 @@ export function BookingCapture() {
           phone: values.phone.trim(),
           page: window.location.pathname,
           sessionId: getBrowserSessionId(),
+          eventId,
+          adsConsent,
         }),
       });
       const data = (await response.json()) as BookingResponse;
@@ -91,6 +96,7 @@ export function BookingCapture() {
         setError(data.error || "Please add your details before booking.");
         return;
       }
+      if (eventId) measureOpenAIAds("lead_created", { type: "customer_action" }, eventId);
       window.location.href = data.calendarLink || CALENDAR_LINK;
     } catch {
       setError("Connection dipped. Try again before booking.");
@@ -149,7 +155,7 @@ export function BookingCapture() {
         <button className="accent-button" type="submit" disabled={submitting}>
           {submitting ? "Saving..." : "Save details & book"} <ArrowUpRight size={16} />
         </button>
-        <a className="booking-capture__whatsapp" href={whatsappLink} target="_blank" rel="noreferrer">
+        <a className="booking-capture__whatsapp" href={whatsappLink} target="_blank" rel="noreferrer" onClick={() => trackOpenAILead("booking_whatsapp")}>
           Fast-track on WhatsApp <ArrowUpRight size={14} />
         </a>
       </form>

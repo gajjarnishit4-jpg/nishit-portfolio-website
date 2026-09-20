@@ -65,15 +65,17 @@ export function InfoPage({ content }: { content: InfoPageContent }) {
       <footer className="info-footer">
         <div>
           <h2>NISHIT GAJJAR</h2>
-          <p>Independent full-stack freelancer.<br />The Fullstack Guys is Nishit&apos;s personal portfolio and project studio.</p>
+          <p>Independent Canadian full-stack freelancer.<br />The Fullstack Guys is Nishit&apos;s freelance technology studio.</p>
           <p>
             Written scope, milestone payments, and 3 months of support after launch.
           </p>
         </div>
         <div className="info-footer__links">
           <Link href="/privacy-policy">Privacy</Link>
+          <Link href="/cookie-policy">Cookies</Link>
           <Link href="/refund-policy">Refunds</Link>
           <Link href="/terms-of-use">Terms</Link>
+          <Link href="/legal-notice">Legal notice</Link>
           <Link href="/admin">Admin panel</Link>
         </div>
       </footer>

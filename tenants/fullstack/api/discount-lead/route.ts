@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ChatMessage, DISCOUNT_CODE, LeadProfile } from "@/tenants/fullstack/lib/business-context";
 import { saveLead } from "@/tenants/fullstack/lib/lead-storage";
+import { sendOpenAIAdsLead } from "@/tenants/fullstack/lib/openai-ads-server";
 
 type DiscountLeadBody = {
   name?: string;
@@ -9,6 +10,8 @@ type DiscountLeadBody = {
   niche?: string;
   page?: string;
   sessionId?: string;
+  eventId?: string;
+  adsConsent?: boolean;
 };
 
 function clean(value?: string) {
@@ -71,6 +74,13 @@ export async function POST(request: NextRequest) {
   }
 
   if (!saved) return NextResponse.json({ error: "Your details could not be saved. Please contact Nishit directly; no inquiry has been recorded." }, { status: 503 });
+
+  if (body.adsConsent === true && body.eventId) {
+    await sendOpenAIAdsLead({
+      eventId: body.eventId,
+      sourceUrl: new URL(body.page || "/", request.nextUrl.origin).href,
+    }).catch((error) => console.error("OpenAI Ads offer conversion failed.", error));
+  }
 
   return NextResponse.json({
     code: DISCOUNT_CODE,

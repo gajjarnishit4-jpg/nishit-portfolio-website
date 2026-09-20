@@ -6,6 +6,7 @@ import {
   WHATSAPP_NUMBER,
 } from "@/tenants/fullstack/lib/business-context";
 import { saveLead } from "@/tenants/fullstack/lib/lead-storage";
+import { sendOpenAIAdsLead } from "@/tenants/fullstack/lib/openai-ads-server";
 
 type BookingLeadBody = {
   name?: string;
@@ -13,6 +14,8 @@ type BookingLeadBody = {
   phone?: string;
   page?: string;
   sessionId?: string;
+  eventId?: string;
+  adsConsent?: boolean;
 };
 
 function clean(value?: string) {
@@ -83,6 +86,13 @@ export async function POST(request: NextRequest) {
       { error: "Your details could not be saved. Please try again before booking." },
       { status: 503 },
     );
+  }
+
+  if (body.adsConsent === true && body.eventId) {
+    await sendOpenAIAdsLead({
+      eventId: body.eventId,
+      sourceUrl: new URL(body.page || "/", request.nextUrl.origin).href,
+    }).catch((error) => console.error("OpenAI Ads booking conversion failed.", error));
   }
 
   return NextResponse.json({
