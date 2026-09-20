@@ -147,6 +147,8 @@ export async function listAdminChatData() {
     supabase
       .from("fullstack_analytics_events")
       .select("id, occurred_at, session_id, path, event_type, x, y, viewport_width, viewport_height, metadata")
+      .not("path", "like", "/admin%")
+      .not("path", "like", "/api/admin%")
       .order("occurred_at", { ascending: false })
       .limit(1000),
   ]);

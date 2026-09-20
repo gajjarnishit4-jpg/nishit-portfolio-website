@@ -45,6 +45,16 @@ function hashIp(request: NextRequest) {
   return createHash("sha256").update(`${salt}:${ip}`).digest("hex");
 }
 
+function isAdminPath(path: string | null) {
+  return Boolean(
+    path &&
+      (path === "/admin" ||
+        path.startsWith("/admin/") ||
+        path === "/api/admin" ||
+        path.startsWith("/api/admin/")),
+  );
+}
+
 export async function POST(request: NextRequest) {
   const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
   const eventType = text(body?.eventType, 80);
@@ -54,15 +64,22 @@ export async function POST(request: NextRequest) {
 
   const metadata = publicMetadata(body?.metadata);
   const visitorId = text(metadata.visitorId, 80);
+  const path = text(body?.path, 1200);
   if (!text(body?.sessionId, 80) || !visitorId) {
     return NextResponse.json({ error: "Missing analytics identifiers." }, { status: 400 });
+  }
+
+  // Administrative activity is operational data, not website visitor traffic.
+  // Acknowledge the beacon without creating a visitor, session, or event row.
+  if (isAdminPath(path)) {
+    return NextResponse.json({ ok: true, ignored: "admin_activity" });
   }
 
   try {
     await saveHeatmapEvent({
       sessionId: text(body?.sessionId, 80),
       visitorId,
-      path: text(body?.path, 1200),
+      path,
       eventType,
       occurredAt: text(body?.occurredAt, 80),
       pageTitle: text(body?.pageTitle, 300),
