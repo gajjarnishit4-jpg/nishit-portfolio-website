@@ -42,6 +42,45 @@ type AnalyticsEvent = {
   metadata: Record<string, unknown> | null;
 };
 
+const ANALYTICS_PAGE_SIZE = 1000;
+const MAX_ANALYTICS_EVENTS = 10_000;
+
+async function listAnalyticsEvents() {
+  const supabase = getSupabaseAdmin();
+  const select = "id, occurred_at, session_id, path, event_type, x, y, viewport_width, viewport_height, metadata";
+  const createQuery = (count?: "exact") =>
+    supabase
+      .from("fullstack_analytics_events")
+      .select(select, count ? { count } : undefined)
+      .not("path", "like", "/admin%")
+      .not("path", "like", "/api/admin%")
+      .order("occurred_at", { ascending: false });
+
+  // Supabase caps a single REST response at 1,000 rows. Fetch subsequent
+  // pages so the visitor count and the cards in the dashboard stay aligned.
+  const firstPage = await createQuery("exact").range(0, ANALYTICS_PAGE_SIZE - 1);
+  throwIfSupabaseError(firstPage.error);
+
+  const pageCount = Math.min(
+    Math.ceil((firstPage.count || 0) / ANALYTICS_PAGE_SIZE),
+    Math.ceil(MAX_ANALYTICS_EVENTS / ANALYTICS_PAGE_SIZE),
+  );
+  if (pageCount <= 1) return (firstPage.data || []) as AnalyticsEvent[];
+
+  const remainingPages = await Promise.all(
+    Array.from({ length: pageCount - 1 }, (_, index) => {
+      const start = (index + 1) * ANALYTICS_PAGE_SIZE;
+      return createQuery().range(start, start + ANALYTICS_PAGE_SIZE - 1);
+    }),
+  );
+  for (const page of remainingPages) throwIfSupabaseError(page.error);
+
+  return [
+    ...(firstPage.data || []),
+    ...remainingPages.flatMap((page) => page.data || []),
+  ] as AnalyticsEvent[];
+}
+
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function safeUuid(value?: string | null) {
@@ -144,18 +183,9 @@ export async function listAdminChatData() {
   const supabase = getSupabaseAdmin();
   const [sessionsResult, eventsResult] = await Promise.all([
     supabase.from("fullstack_chat_sessions").select("*").order("updated_at", { ascending: false }).limit(80),
-    supabase
-      .from("fullstack_analytics_events")
-      .select("id, occurred_at, session_id, path, event_type, x, y, viewport_width, viewport_height, metadata")
-      .not("path", "like", "/admin%")
-      .not("path", "like", "/api/admin%")
-      .order("occurred_at", { ascending: false })
-      // Visitor summaries are built from these events. Keep enough history for
-      // the dashboard's visitor total rather than silently omitting older visits.
-      .limit(10000),
+    listAnalyticsEvents(),
   ]);
   throwIfSupabaseError(sessionsResult.error);
-  throwIfSupabaseError(eventsResult.error);
 
   const sessions = (sessionsResult.data || []) as StoredChatSession[];
   const ids = sessions.map((session) => session.id);
@@ -169,7 +199,7 @@ export async function listAdminChatData() {
     : { data: [], error: null };
   throwIfSupabaseError(messagesResult.error);
 
-  const heatmap = ((eventsResult.data || []) as AnalyticsEvent[]).map((event) => ({
+  const heatmap = eventsResult.map((event) => ({
     id: event.id,
     created_at: event.occurred_at,
     session_id: event.session_id,

@@ -8,6 +8,7 @@ type Metadata = Record<string, unknown>;
 
 function elementMetadata(target: EventTarget | null): Metadata {
   const element = target instanceof HTMLElement ? target : null;
+  const mainEvent = element?.closest<HTMLElement>("[data-main-event]")?.dataset.mainEvent || null;
   const link = element?.closest("a");
   const section = element?.closest("section, header, footer, main, nav");
   return {
@@ -16,6 +17,7 @@ function elementMetadata(target: EventTarget | null): Metadata {
     className: typeof element?.className === "string" ? element.className.slice(0, 240) : null,
     text: element?.innerText?.replace(/\s+/g, " ").trim().slice(0, 160) || null,
     href: link?.href?.slice(0, 1000) || null,
+    mainEvent,
     section: section?.id || section?.getAttribute("aria-label") || section?.tagName.toLowerCase() || null,
   };
 }

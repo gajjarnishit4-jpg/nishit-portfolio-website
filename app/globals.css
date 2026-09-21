@@ -3284,6 +3284,25 @@ button:hover .arrow--diagonal {
   max-height: 180px;
 }
 
+.admin-main-events { display: grid; gap: 14px; }
+.admin-main-event-counts { display: grid; gap: 10px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.admin-main-event-count,
+.admin-main-event-row { background: #fffaf0; border: 1px solid rgba(17,17,17,.12); border-radius: 8px; padding: 12px; }
+.admin-main-event-count { display: grid; gap: 4px; min-height: 112px; }
+.admin-main-event-count span,
+.admin-main-event-count small,
+.admin-main-event-row span,
+.admin-main-event-row time,
+.admin-main-event-row a { color: rgba(17,17,17,.56); font-family: var(--font-geist-mono), monospace; font-size: .61rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.admin-main-event-count strong { align-self: end; font-size: 3rem; letter-spacing: -.08em; line-height: .8; }
+.admin-main-event-list-panel { min-height: min(620px, calc(100svh - 238px)); }
+.admin-main-event-list { display: grid; gap: 8px; max-height: calc(100svh - 326px); overflow-y: auto; padding-right: 4px; }
+.admin-main-event-row { align-items: center; display: flex; gap: 14px; justify-content: space-between; }
+.admin-main-event-row > div { display: grid; gap: 5px; min-width: 0; }
+.admin-main-event-row strong { font-size: .9rem; overflow-wrap: anywhere; }
+.admin-main-event-row b { background: var(--acid); border: 1px solid var(--ink); border-radius: 999px; font-family: var(--font-geist-mono), monospace; font-size: .58rem; justify-self: start; letter-spacing: .07em; padding: 4px 7px; text-transform: uppercase; }
+.admin-main-event-row a { color: var(--purple); text-decoration: underline; text-underline-offset: 3px; }
+
 @media (max-width: 1180px) {
   .admin-shell {
     grid-template-columns: 1fr;
@@ -3380,6 +3399,9 @@ button:hover .arrow--diagonal {
   .admin-device-row {
     grid-template-columns: 1fr;
   }
+
+  .admin-main-event-counts { grid-template-columns: 1fr; }
+  .admin-main-event-row { align-items: flex-start; flex-direction: column; }
 
   .admin-activity-row {
     align-items: flex-start;

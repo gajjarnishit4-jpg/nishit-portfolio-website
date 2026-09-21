@@ -133,14 +133,15 @@ function AssistantMessageContent({ content }: { content: string }) {
         );
       })}
       <div className="lead-chat__ctas" aria-label="Contact Nishit">
-        <a href={`tel:+${phoneNumber}`} onClick={() => trackOpenAILead("call_now")}>Call now</a>
-        <button type="button" onClick={openBookingCapture}>
+        <a href={`tel:+${phoneNumber}`} data-main-event="call_now" onClick={() => trackOpenAILead("call_now")}>Call now</a>
+        <button type="button" data-main-event="book_call" onClick={openBookingCapture}>
           Book a call
         </button>
         <a
           href={`https://wa.me/${phoneNumber}`}
           target="_blank"
           rel="noreferrer"
+          data-main-event="whatsapp"
           onClick={() => trackOpenAILead("whatsapp")}
         >
           WhatsApp

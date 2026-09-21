@@ -107,20 +107,29 @@ type VisitorGroup = {
   sessions: VisitorSessionStats[];
 };
 
+type MainEventKey = "whatsapp" | "call_now" | "book_call";
+type MainEvents = {
+  total: number;
+  counts: Array<{ key: MainEventKey; label: string; count: number }>;
+  recent: Array<{ id: number; key: MainEventKey; label: string; created_at: string; sessionId: string; visitorId: string; path: string; device: string; location: string | null }>;
+};
+
 type Overview = {
   leads: LeadRow[];
   sessions: ChatSession[];
   messages: ChatMessageRow[];
   analytics: Analytics;
+  mainEvents: MainEvents;
 };
 
-export type AdminView = "overview" | "leads" | "chats" | "visitors";
+export type AdminView = "overview" | "leads" | "chats" | "visitors" | "events";
 
 const adminTabs: Array<{ view: AdminView; label: string; href: string }> = [
   { view: "overview", label: "Overview", href: "/admin" },
   { view: "leads", label: "Leads", href: "/admin/leads" },
   { view: "chats", label: "Chats", href: "/admin/chats" },
   { view: "visitors", label: "Visitors", href: "/admin/visitors" },
+  { view: "events", label: "Main events", href: "/admin/events" },
 ];
 
 const viewTitles: Record<AdminView, { eyebrow: string; title: string }> = {
@@ -128,6 +137,7 @@ const viewTitles: Record<AdminView, { eyebrow: string; title: string }> = {
   leads: { eyebrow: "Lead pipeline", title: "Organized leads" },
   chats: { eyebrow: "Conversation review", title: "Chat inbox" },
   visitors: { eyebrow: "Visitor intelligence", title: "Sessions and activity" },
+  events: { eyebrow: "Conversion intelligence", title: "Main events" },
 };
 
 function timeAgo(value: string) {
@@ -374,7 +384,7 @@ export function AdminDashboard({ admin, view = "overview" }: { admin: string; vi
               </dl>
               <div className="admin-session-timeline-list">
                 {visitor.sessions.map((session) => (
-                  <details key={session.sessionId} className="admin-session-timeline">
+                  <details id={`session-${session.sessionId}`} key={session.sessionId} className="admin-session-timeline">
                   <summary>
                     <span>
                       <strong>{session.device} session</strong>
@@ -506,6 +516,32 @@ export function AdminDashboard({ admin, view = "overview" }: { admin: string; vi
     </section>
   );
 
+  const mainEventsPanel = (
+    <section className="admin-main-events" id="events">
+      <section className="admin-panel">
+        <div className="admin-panel__head"><h2>Primary CTA clicks</h2><span>{data?.mainEvents?.total || 0} tracked</span></div>
+        <div className="admin-main-event-counts">
+          {(data?.mainEvents?.counts || []).map((event) => (
+            <article key={event.key} className="admin-main-event-count">
+              <span>{event.label}</span><strong>{event.count}</strong><small>clicks</small>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="admin-panel admin-main-event-list-panel">
+        <div className="admin-panel__head"><h2>Click sessions</h2><span>Latest 100</span></div>
+        {(data?.mainEvents?.recent || []).length ? <div className="admin-main-event-list">
+          {(data?.mainEvents?.recent || []).map((event) => (
+            <article key={event.id} className="admin-main-event-row">
+              <div><b>{event.label}</b><strong>{event.path}</strong><span>{event.device} · {event.location || "Location unavailable"} · Visitor {shortId(event.visitorId)}</span></div>
+              <div><time>{timeAgo(event.created_at)} ago</time><Link href={`/admin/visitors#session-${event.sessionId}`}>View session →</Link></div>
+            </article>
+          ))}
+        </div> : <div className="admin-empty">No primary CTA clicks yet. New clicks appear here automatically.</div>}
+      </section>
+    </section>
+  );
+
   return (
     <main className="admin-shell">
       <aside className="admin-sidebar">
@@ -544,6 +580,7 @@ export function AdminDashboard({ admin, view = "overview" }: { admin: string; vi
 
         {view === "overview" ? (
           <>
+            {mainEventsPanel}
             <section className="admin-overview-grid">
               {leadsPanel}
               {chatsPanel}
@@ -555,6 +592,7 @@ export function AdminDashboard({ admin, view = "overview" }: { admin: string; vi
         {view === "leads" ? <section className="admin-single-page">{leadsPanel}</section> : null}
         {view === "chats" ? <section className="admin-single-page admin-single-page--chat">{chatsPanel}</section> : null}
         {view === "visitors" ? visitorsPanel : null}
+        {view === "events" ? mainEventsPanel : null}
       </section>
     </main>
   );

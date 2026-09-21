@@ -25,6 +25,14 @@ type SessionLocationRow = {
   last_seen_at: string;
 };
 
+type MainEventKey = "whatsapp" | "call_now" | "book_call";
+
+const mainEventLabels: Record<MainEventKey, string> = {
+  whatsapp: "WhatsApp",
+  call_now: "Call now",
+  book_call: "Book a call",
+};
+
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
 function countryName(code?: string | null) {
@@ -176,6 +184,39 @@ function formatActivity(event: HeatmapRow) {
 function getVisitorKey(event: HeatmapRow, sessionId: string) {
   const visitorId = event.metadata?.visitorId;
   return typeof visitorId === "string" && visitorId.trim() ? visitorId : sessionId;
+}
+
+function getMainEventKey(event: HeatmapRow): MainEventKey | null {
+  const value = event.metadata?.mainEvent;
+  if (value === "whatsapp" || value === "call_now" || value === "book_call") return value;
+  const href = String(event.metadata?.href || "").toLowerCase();
+  const text = String(event.metadata?.text || "").toLowerCase();
+  if (href.includes("wa.me") || text.includes("whatsapp")) return "whatsapp";
+  if (href.startsWith("tel:") || text.includes("call now")) return "call_now";
+  if (/\b(book|request|schedule|meet)\b.*\b(call|partner)\b/.test(text)) return "book_call";
+  return null;
+}
+
+function buildMainEvents(heatmap: HeatmapRow[], locations: SessionLocationRow[]) {
+  const locationBySession = new Map(locations.map((item) => [item.session_id, item]));
+  const counts: Record<MainEventKey, number> = { whatsapp: 0, call_now: 0, book_call: 0 };
+  const recent = heatmap.flatMap((event) => {
+    const key = getMainEventKey(event);
+    if (!key) return [];
+    counts[key] += 1;
+    const sessionId = event.session_id || `event-${event.id}`;
+    const location = locationBySession.get(sessionId);
+    return [{
+      id: event.id, key, label: mainEventLabels[key], created_at: event.created_at, sessionId,
+      visitorId: getVisitorKey(event, sessionId), path: readablePage(event.path), device: formatDevice(event.viewport_width),
+      location: location ? [location.city, location.region, countryName(location.country)].filter(Boolean).join(", ") || null : null,
+    }];
+  });
+  return {
+    total: recent.length,
+    counts: (Object.keys(mainEventLabels) as MainEventKey[]).map((key) => ({ key, label: mainEventLabels[key], count: counts[key] })),
+    recent: recent.slice(0, 100),
+  };
 }
 
 function buildAnalytics(heatmap: HeatmapRow[], locations: SessionLocationRow[]) {
@@ -398,6 +439,7 @@ export async function GET(request: NextRequest) {
     chatData.heatmap as HeatmapRow[],
     (sessionLocations.data || []) as SessionLocationRow[],
   );
+  const mainEvents = buildMainEvents(chatData.heatmap as HeatmapRow[], (sessionLocations.data || []) as SessionLocationRow[]);
   analytics.totalVisitors = visitorCount.count || 0;
   analytics.totalSessions = sessionCount.count || 0;
   const liveVisitors = new Set((activeSessions.data || []).map((row) => row.visitor_id)).size;
@@ -410,6 +452,7 @@ export async function GET(request: NextRequest) {
       liveVisitors,
       totalEvents: eventCount.count || 0,
     },
+    mainEvents,
     ...chatData,
   });
 }

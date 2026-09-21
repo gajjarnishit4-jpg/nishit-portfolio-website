@@ -4,7 +4,7 @@ import { FULLSTACK_ROUTE_PREFIX, isFullstackHost } from "./tenant-routing";
 
 const fullstackRoutes = new Set([
   "/", "/about", "/process", "/pricing", "/support", "/privacy-policy", "/cookie-policy", "/terms-of-use", "/refund-policy", "/legal-notice",
-  "/admin", "/admin/chats", "/admin/leads", "/admin/visitors",
+  "/admin", "/admin/chats", "/admin/leads", "/admin/visitors", "/admin/events",
   "/blog", "/news", "/llms.txt", "/llms-full.txt", "/feed.xml",
   "/api/chat", "/api/track", "/api/booking-lead", "/api/discount-lead", "/api/openai-ads-event", "/api/admin/login", "/api/admin/logout", "/api/admin/overview", "/api/admin/chat-action",
   "/robots.txt", "/sitemap.xml", "/favicon.ico",
