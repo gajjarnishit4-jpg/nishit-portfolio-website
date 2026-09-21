@@ -65,14 +65,19 @@ test("session geography supports Vercel and is exposed in admin analytics", asyn
   assert.match(dashboard, /Sessions by country/);
 });
 
-test("the mobile homepage defers heavy media and limits eager hero images", async () => {
-  const [page, platformShowcase, layout] = await Promise.all([
+test("the mobile homepage defers heavy media and uses a non-blocking splash", async () => {
+  const [page, splash, brandStyles, platformShowcase, layout] = await Promise.all([
     read("tenants/fullstack/page.tsx"),
+    read("tenants/fullstack/components/SplashScreen.tsx"),
+    read("tenants/fullstack/brand.css"),
     read("tenants/fullstack/components/PlatformShowcase.tsx"),
     read("app/layout.tsx"),
   ]);
 
-  assert.doesNotMatch(page, /<SplashScreen/);
+  assert.match(page, /<SplashScreen/);
+  assert.doesNotMatch(splash, /useEffect|setTimeout/);
+  assert.match(splash, /aria-hidden="true"/);
+  assert.match(brandStyles, /fullstack-simple-splash-out/);
   assert.doesNotMatch(page, /preload="auto"/);
   assert.match(page, /Math\.abs\(position\) <= 1/);
   assert.match(page, /fetchPriority=\{position === 0 \? "high" : "low"\}/);

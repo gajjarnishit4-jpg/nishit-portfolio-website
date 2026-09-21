@@ -13,13 +13,13 @@ html[data-tenant="fullstack"] .floating-brand .brand-logo-image { width: 132px; 
 html[data-tenant="fullstack"] .floating-brand {
   position: relative;
   isolation: isolate;
-  animation: fullstack-header-brand-settle 600ms cubic-bezier(.76, 0, .24, 1) 80ms both;
+  animation: fullstack-header-brand-settle 600ms cubic-bezier(.76, 0, .24, 1) 820ms both;
 }
 html[data-tenant="fullstack"] .floating-brand .brand-logo-image {
   opacity: 0;
   transform: scale(.45) translateY(10px);
   filter: blur(10px) brightness(.75);
-  animation: fullstack-header-logo-reveal 650ms cubic-bezier(.16, 1, .3, 1) 100ms forwards;
+  animation: fullstack-header-logo-reveal 650ms cubic-bezier(.16, 1, .3, 1) 840ms forwards;
 }
 html[data-tenant="fullstack"] .floating-brand::before {
   content: "";
@@ -34,7 +34,7 @@ html[data-tenant="fullstack"] .floating-brand::before {
   opacity: 0;
   pointer-events: none;
   filter: blur(24px);
-  animation: fullstack-header-logo-glow 850ms ease-out 240ms forwards;
+  animation: fullstack-header-logo-glow 850ms ease-out 980ms forwards;
 }
 @keyframes fullstack-header-logo-reveal {
   0% { opacity: 0; transform: scale(.45) translateY(10px); filter: blur(10px) brightness(.75); }
@@ -98,7 +98,7 @@ html[data-tenant="fullstack"] .floating-brand::before {
 
 html[data-tenant="fullstack"] .floating-brand .brand-logo-image--header {
   width: 176px;
-  height: 40px;
+  height: auto;
 }
 html[data-tenant="fullstack"] button.proof-call-link,
 html[data-tenant="fullstack"] button.white-button,
@@ -115,6 +115,9 @@ html[data-tenant="fullstack"] .site-splash--simple {
   place-items: center;
   background: #071710;
   cursor: default;
+  pointer-events: none;
+  animation: fullstack-simple-splash-out 1050ms cubic-bezier(.76, 0, .24, 1) forwards;
+  will-change: opacity, transform;
 }
 html[data-tenant="fullstack"] .site-splash--simple::before,
 html[data-tenant="fullstack"] .site-splash--simple .site-splash__cursor,
@@ -154,22 +157,16 @@ html[data-tenant="fullstack"] .site-splash--simple .site-splash__progress {
 }
 html[data-tenant="fullstack"] .site-splash--simple .site-splash__progress span {
   background: #b7ef66;
-  animation-duration: 900ms;
-}
-html[data-tenant="fullstack"] .site-splash--simple > button {
-  position: absolute;
-  right: 22px;
-  bottom: 18px;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, .58);
-  font: inherit;
-  font-size: 13px;
-  cursor: pointer;
+  animation-duration: 760ms;
 }
 @keyframes fullstack-simple-splash-in {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fullstack-simple-splash-out {
+  0%, 62% { opacity: 1; transform: translateY(0); visibility: visible; }
+  99% { opacity: 0; transform: translateY(-14px); visibility: visible; }
+  100% { opacity: 0; transform: translateY(-14px); visibility: hidden; }
 }
 html[data-tenant="fullstack"] .lead-chat__ctas button {
   border: 0;
@@ -278,8 +275,14 @@ html[data-tenant="fullstack"] .booking-capture__whatsapp {
 }
 @media (min-width: 761px) {
   html[data-tenant="fullstack"] .floating-brand .brand-logo-image--header {
-    width: 220px;
-    height: 52px;
+    width: 176px;
+    height: auto;
+  }
+}
+@media (max-width: 760px) {
+  html[data-tenant="fullstack"] .floating-brand .brand-logo-image--header {
+    width: 146px;
+    height: auto;
   }
 }
 @media (max-width: 600px) {

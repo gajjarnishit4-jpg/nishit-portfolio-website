@@ -33,6 +33,7 @@ import {
 import { BrandLogo } from "@/tenants/fullstack/components/BrandPrimitives";
 import { LeadChat } from "@/tenants/fullstack/components/LeadChat";
 import { PlatformShowcase } from "@/tenants/fullstack/components/PlatformShowcase";
+import { SplashScreen } from "@/tenants/fullstack/components/SplashScreen";
 import { DiscountPopup } from "@/tenants/fullstack/components/DiscountPopup";
 import { VisitorTracker } from "@/tenants/fullstack/components/VisitorTracker";
 import { OpenAIAdsPixel } from "@/tenants/fullstack/components/OpenAIAdsPixel";
@@ -483,6 +484,7 @@ export default function Home() {
         "studio-site creative-site" + (!moving ? " motion-paused" : "")
       }
     >
+      <SplashScreen />
       <header className="floating-header">
         <Link className="floating-brand" href="/" aria-label="Nishit Gajjar home">
           <BrandLogo header />

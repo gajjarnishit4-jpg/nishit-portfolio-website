@@ -25,18 +25,27 @@ export function SectionWave({
   );
 }
 
-export function BrandLogo({ header = false }: { header?: boolean }) {
+export function BrandLogo({
+  header = false,
+  splash = false,
+}: {
+  header?: boolean;
+  splash?: boolean;
+}) {
+  const wordmark = header || splash;
   return (
     <Image
-      className={`brand-logo-image${header ? " brand-logo-image--header" : ""}`}
-      src={header
+      className={`brand-logo-image${header ? " brand-logo-image--header" : ""}${splash ? " brand-logo-image--splash" : ""}`}
+      src={wordmark
         ? "/tenant-assets/fullstack/fullstack-wordmark-white.png"
         : "/tenant-assets/fullstack/fullstack-logo.svg"}
       alt="The Fullstack Guys — Nishit Gajjar, independent freelancer"
-      width={header ? 1694 : 220}
-      height={header ? 342 : 90}
-      sizes={header ? "(max-width: 600px) 146px, 176px" : "190px"}
-      unoptimized={!header}
+      width={wordmark ? 1694 : 220}
+      height={wordmark ? 342 : 90}
+      sizes={splash ? "(max-width: 600px) 72vw, 520px" : header ? "(max-width: 760px) 146px, 176px" : "190px"}
+      loading={wordmark ? "eager" : "lazy"}
+      fetchPriority={splash ? "high" : "auto"}
+      unoptimized={!wordmark}
     />
   );
 }
