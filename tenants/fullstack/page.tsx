@@ -33,7 +33,6 @@ import {
 import { BrandLogo } from "@/tenants/fullstack/components/BrandPrimitives";
 import { LeadChat } from "@/tenants/fullstack/components/LeadChat";
 import { PlatformShowcase } from "@/tenants/fullstack/components/PlatformShowcase";
-import { SplashScreen } from "@/tenants/fullstack/components/SplashScreen";
 import { DiscountPopup } from "@/tenants/fullstack/components/DiscountPopup";
 import { VisitorTracker } from "@/tenants/fullstack/components/VisitorTracker";
 import { OpenAIAdsPixel } from "@/tenants/fullstack/components/OpenAIAdsPixel";
@@ -484,7 +483,6 @@ export default function Home() {
         "studio-site creative-site" + (!moving ? " motion-paused" : "")
       }
     >
-      <SplashScreen />
       <header className="floating-header">
         <Link className="floating-brand" href="/" aria-label="Nishit Gajjar home">
           <BrandLogo header />
@@ -677,15 +675,18 @@ export default function Home() {
                 }}
                 draggable={false}
               >
-                <Image unoptimized
-                  src={item.image}
-                  alt={item.title + " digital experience"}
-                  width={900}
-                  height={600}
-                  priority={Math.abs(position) < 2}
-                  loading="eager"
-                  draggable={false}
-                />
+                {Math.abs(position) <= 1 ? (
+                  <Image
+                    src={item.image}
+                    alt={item.title + " digital experience"}
+                    width={900}
+                    height={600}
+                    loading={position === 0 ? "eager" : "lazy"}
+                    fetchPriority={position === 0 ? "high" : "low"}
+                    sizes="(max-width: 760px) 285px, (max-width: 1150px) 440px, 510px"
+                    draggable={false}
+                  />
+                ) : null}
                 <span className="gallery-slide-title">
                   {item.title}
                   <ArrowUpRight size={17} />
@@ -996,7 +997,7 @@ export default function Home() {
               playsInline
               muted
               loop
-              preload="auto"
+              preload="none"
             />
             <span className="reel-play">
               <Play size={16} fill="currentColor" /> PLAY NISHIT&apos;S SHOWREEL
@@ -1048,11 +1049,12 @@ export default function Home() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Image unoptimized
+                  <Image
                     src={project.image}
                     alt={project.title + " website"}
                     width={440}
                     height={300}
+                    sizes="(max-width: 760px) 78vw, 440px"
                   />
                   <span>
                     {project.title} / Website <ArrowUpRight size={12} />
@@ -1170,12 +1172,13 @@ export default function Home() {
                   style={{ "--project-color": project.color } as CSSProperties}
                   aria-label={"Visit " + project.title + " website"}
                 >
-                  <Image unoptimized
+                  <Image
                     src={project.image}
                     alt={project.title + " website design"}
                     width={1400}
                     height={788}
                     loading="lazy"
+                    sizes="(max-width: 760px) calc(100vw - 34px), (max-width: 1100px) 48vw, 620px"
                   />
                   <span className="project-hover">
                     <ArrowUpRight size={24} />
@@ -1509,7 +1512,7 @@ export default function Home() {
             playsInline
             loop
             controls
-            preload="metadata"
+            preload="none"
           />
         </div>
       </dialog>

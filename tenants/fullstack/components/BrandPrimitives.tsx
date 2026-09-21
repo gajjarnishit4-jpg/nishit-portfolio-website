@@ -27,7 +27,7 @@ export function SectionWave({
 
 export function BrandLogo({ header = false }: { header?: boolean }) {
   return (
-    <Image unoptimized
+    <Image
       className={`brand-logo-image${header ? " brand-logo-image--header" : ""}`}
       src={header
         ? "/tenant-assets/fullstack/fullstack-wordmark-white.png"
@@ -35,6 +35,8 @@ export function BrandLogo({ header = false }: { header?: boolean }) {
       alt="The Fullstack Guys — Nishit Gajjar, independent freelancer"
       width={header ? 1694 : 220}
       height={header ? 342 : 90}
+      sizes={header ? "(max-width: 600px) 146px, 176px" : "190px"}
+      unoptimized={!header}
     />
   );
 }

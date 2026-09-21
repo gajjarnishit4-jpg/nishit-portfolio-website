@@ -174,7 +174,15 @@ export function PlatformShowcase({ onDiscuss }: { onDiscuss: () => void }) {
                   <a href={item.url} target="_blank" rel="noreferrer" key={item.title}
                     aria-label={`Visit ${item.title}`} aria-hidden={project !== index} inert={project !== index} tabIndex={project === index ? 0 : -1}
                     className="platform-project-slide">
-                    <Image unoptimized src={item.image} alt={`${item.title} website`} width={1400} height={788} draggable={false} loading={index === project ? "eager" : "lazy"} />
+                    <Image
+                      src={item.image}
+                      alt={`${item.title} website`}
+                      width={1400}
+                      height={788}
+                      draggable={false}
+                      loading="lazy"
+                      sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 58vw, 650px"
+                    />
                   </a>
                 ))}
               </div>
