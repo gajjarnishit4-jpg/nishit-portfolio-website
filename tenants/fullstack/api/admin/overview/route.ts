@@ -16,6 +16,80 @@ type HeatmapRow = {
   metadata: Record<string, unknown> | null;
 };
 
+type SessionLocationRow = {
+  session_id: string;
+  visitor_id: string;
+  country: string | null;
+  region: string | null;
+  city: string | null;
+  last_seen_at: string;
+};
+
+const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+
+function countryName(code?: string | null) {
+  const normalized = code?.trim().toUpperCase();
+  if (!normalized || normalized === "XX") return "Unknown";
+  try {
+    return regionNames.of(normalized) || normalized;
+  } catch {
+    return normalized;
+  }
+}
+
+function buildCountryStats(rows: SessionLocationRow[]) {
+  const locatedRows = rows.filter((row) => {
+    const code = row.country?.trim().toUpperCase();
+    return Boolean(code && code !== "XX");
+  });
+  const groups = new Map<
+    string,
+    {
+      code: string;
+      name: string;
+      sessions: number;
+      visitors: Set<string>;
+      locations: Set<string>;
+      lastSeen: string;
+    }
+  >();
+
+  for (const row of locatedRows) {
+    const code = row.country!.trim().toUpperCase();
+    const current = groups.get(code) || {
+      code,
+      name: countryName(code),
+      sessions: 0,
+      visitors: new Set<string>(),
+      locations: new Set<string>(),
+      lastSeen: row.last_seen_at,
+    };
+    current.sessions += 1;
+    current.visitors.add(row.visitor_id);
+    const location = [row.city, row.region].filter(Boolean).join(", ");
+    if (location) current.locations.add(location);
+    if (new Date(row.last_seen_at).getTime() > new Date(current.lastSeen).getTime()) {
+      current.lastSeen = row.last_seen_at;
+    }
+    groups.set(code, current);
+  }
+
+  return {
+    locatedSessions: locatedRows.length,
+    countryStats: Array.from(groups.values())
+      .map((group) => ({
+        code: group.code,
+        name: group.name,
+        sessions: group.sessions,
+        visitors: group.visitors.size,
+        share: locatedRows.length ? Math.round((group.sessions / locatedRows.length) * 100) : 0,
+        locations: Array.from(group.locations).slice(0, 4),
+        lastSeen: group.lastSeen,
+      }))
+      .sort((a, b) => b.sessions - a.sessions || a.name.localeCompare(b.name)),
+  };
+}
+
 function formatDevice(width?: number | null) {
   if (!width) return "Unknown";
   if (width < 760) return "Mobile";
@@ -104,8 +178,9 @@ function getVisitorKey(event: HeatmapRow, sessionId: string) {
   return typeof visitorId === "string" && visitorId.trim() ? visitorId : sessionId;
 }
 
-function buildAnalytics(heatmap: HeatmapRow[]) {
+function buildAnalytics(heatmap: HeatmapRow[], locations: SessionLocationRow[]) {
   const meaningfulEvents = heatmap.filter(isMeaningfulActivity);
+  const locationBySession = new Map(locations.map((location) => [location.session_id, location]));
   const sessions = new Map<
     string,
     {
@@ -172,6 +247,7 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
 
   const sessionStats = Array.from(sessions.values())
     .map((session) => {
+      const sessionLocation = locationBySession.get(session.id);
       const timeline = session.events
         .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
         .slice(-30);
@@ -203,6 +279,11 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
         lastSeen: new Date(session.last).toISOString(),
         startedAt: new Date(session.first).toISOString(),
         visitorId: session.visitorId,
+        location: sessionLocation
+          ? [sessionLocation.city, sessionLocation.region, countryName(sessionLocation.country)]
+              .filter((part) => part && part !== "Unknown")
+              .join(", ") || null
+          : null,
         summary,
         timeline,
       };
@@ -260,6 +341,8 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
     }, new Map()).values()
   ).sort((a, b) => new Date(b.lastSeen).getTime() - new Date(a.lastSeen).getTime());
 
+  const countryAnalytics = buildCountryStats(locations);
+
   return {
     totalSessions: sessionStats.length,
     totalVisitors: visitorGroups.length,
@@ -270,6 +353,7 @@ function buildAnalytics(heatmap: HeatmapRow[]) {
       ...visitor,
       sessions: visitor.sessions,
     })),
+    ...countryAnalytics,
     topPages: Array.from(pageCounts.entries())
       .map(([path, count]) => ({ path, count }))
       .sort((a, b) => b.count - a.count)
@@ -290,21 +374,30 @@ export async function GET(request: NextRequest) {
 
   const supabase = getSupabaseAdmin();
   const activeSince = new Date(Date.now() - 90_000).toISOString();
-  const [leadResult, visitorCount, sessionCount, eventCount, activeSessions] = await Promise.all([
+  const [leadResult, visitorCount, sessionCount, eventCount, activeSessions, sessionLocations] = await Promise.all([
     supabase.from("fullstack_leads").select("*").order("created_at", { ascending: false }).limit(80),
     supabase.from("fullstack_visitors").select("*", { count: "exact", head: true }),
     supabase.from("fullstack_sessions").select("*", { count: "exact", head: true }),
     supabase.from("fullstack_analytics_events").select("*", { count: "exact", head: true }),
     supabase.from("fullstack_sessions").select("visitor_id").gte("last_seen_at", activeSince),
+    supabase
+      .from("fullstack_sessions")
+      .select("session_id, visitor_id, country, region, city, last_seen_at")
+      .order("last_seen_at", { ascending: false })
+      .limit(5000),
   ]);
   throwIfSupabaseError(leadResult.error);
   throwIfSupabaseError(visitorCount.error);
   throwIfSupabaseError(sessionCount.error);
   throwIfSupabaseError(eventCount.error);
   throwIfSupabaseError(activeSessions.error);
+  throwIfSupabaseError(sessionLocations.error);
   const leads = leadResult.data || [];
   const chatData = await listAdminChatData();
-  const analytics = buildAnalytics(chatData.heatmap as HeatmapRow[]);
+  const analytics = buildAnalytics(
+    chatData.heatmap as HeatmapRow[],
+    (sessionLocations.data || []) as SessionLocationRow[],
+  );
   analytics.totalVisitors = visitorCount.count || 0;
   analytics.totalSessions = sessionCount.count || 0;
   const liveVisitors = new Set((activeSessions.data || []).map((row) => row.visitor_id)).size;

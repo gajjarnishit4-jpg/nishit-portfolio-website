@@ -51,6 +51,8 @@ type Analytics = {
   totalEvents: number;
   deviceCounts: Record<string, number>;
   avgTimeSpentSeconds: number;
+  locatedSessions: number;
+  countryStats: CountryStat[];
   sessionStats: VisitorSessionStats[];
   visitors: VisitorGroup[];
   topPages: Array<{ path: string; count: number }>;
@@ -62,9 +64,20 @@ type Analytics = {
   }>;
 };
 
+type CountryStat = {
+  code: string;
+  name: string;
+  sessions: number;
+  visitors: number;
+  share: number;
+  locations: string[];
+  lastSeen: string;
+};
+
 type VisitorSessionStats = {
   sessionId: string;
   visitorId: string;
+  location: string | null;
   path: string;
   device: string;
   eventCount: number;
@@ -154,6 +167,11 @@ function scoreLabel(score?: number | null) {
 
 function shortId(value: string) {
   return value.length > 10 ? value.slice(0, 10) : value;
+}
+
+function countryFlag(code: string) {
+  if (!/^[A-Z]{2}$/.test(code)) return "◌";
+  return String.fromCodePoint(...code.split("").map((letter) => 127397 + letter.charCodeAt(0)));
 }
 
 export function AdminDashboard({ admin, view = "overview" }: { admin: string; view?: AdminView }) {
@@ -360,6 +378,7 @@ export function AdminDashboard({ admin, view = "overview" }: { admin: string; vi
                   <summary>
                     <span>
                       <strong>{session.device} session</strong>
+                      <small>{session.location || "Country unavailable"}</small>
                       <small>{session.summary}</small>
                       </span>
                       <time>{timeAgo(session.lastSeen)} ago</time>
@@ -435,6 +454,54 @@ export function AdminDashboard({ admin, view = "overview" }: { admin: string; vi
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="admin-panel admin-country-panel">
+        <div className="admin-panel__head">
+          <h2>Sessions by country</h2>
+          <span>
+            {data?.analytics?.locatedSessions || 0} of {data?.analytics?.totalSessions || 0} located
+          </span>
+        </div>
+        {(data?.analytics?.countryStats || []).length ? (
+          <div className="admin-country-map" aria-label="Country distribution of tracked sessions">
+            {(data?.analytics?.countryStats || []).map((country) => (
+              <article className="admin-country-row" key={country.code}>
+                <span className="admin-country-row__flag" aria-hidden="true">
+                  {countryFlag(country.code)}
+                </span>
+                <div className="admin-country-row__body">
+                  <div>
+                    <strong>{country.name}</strong>
+                    <small>{country.code} · {country.locations.join(" · ") || "Region unavailable"}</small>
+                  </div>
+                  <div
+                    className="admin-country-row__bar"
+                    role="progressbar"
+                    aria-label={`${country.name}: ${country.share}% of located sessions`}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={country.share}
+                  >
+                    <span style={{ width: `${Math.max(country.share, 3)}%` }} />
+                  </div>
+                </div>
+                <div className="admin-country-row__count">
+                  <strong>{country.sessions}</strong>
+                  <span>{country.sessions === 1 ? "session" : "sessions"}</span>
+                  <small>{country.visitors} {country.visitors === 1 ? "visitor" : "visitors"}</small>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="admin-empty admin-country-empty">
+            Country data will appear after a visitor reaches the deployed site. Localhost sessions do not include edge location headers.
+          </div>
+        )}
+        <p className="admin-country-note">
+          Country, region, and city come from the hosting edge. No raw IP address is stored.
+        </p>
       </section>
     </section>
   );

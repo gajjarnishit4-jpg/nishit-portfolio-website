@@ -370,7 +370,7 @@ export async function saveHeatmapEvent({
 
   const { data: existingSession, error: sessionLookupError } = await supabase
     .from("fullstack_sessions")
-    .select("event_count, click_count, max_scroll_depth, started_at")
+    .select("event_count, click_count, max_scroll_depth, started_at, country, region, city")
     .eq("session_id", session)
     .maybeSingle();
   throwIfSupabaseError(sessionLookupError);
@@ -399,9 +399,9 @@ export async function saveHeatmapEvent({
       viewport_width: viewportWidth || null,
       viewport_height: viewportHeight || null,
       ip_hash: ipHash || null,
-      country: country || null,
-      region: region || null,
-      city: city || null,
+      country: country || existingSession?.country || null,
+      region: region || existingSession?.region || null,
+      city: city || existingSession?.city || null,
       event_count: (existingSession?.event_count || 0) + 1,
       click_count: (existingSession?.click_count || 0) + (eventType === "click" ? 1 : 0),
       max_scroll_depth: Math.max(existingSession?.max_scroll_depth || 0, scrollDepth),

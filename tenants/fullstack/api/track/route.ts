@@ -45,6 +45,19 @@ function hashIp(request: NextRequest) {
   return createHash("sha256").update(`${salt}:${ip}`).digest("hex");
 }
 
+function locationHeader(request: NextRequest, ...names: string[]) {
+  for (const name of names) {
+    const value = request.headers.get(name)?.trim();
+    if (!value) continue;
+    try {
+      return decodeURIComponent(value);
+    } catch {
+      return value;
+    }
+  }
+  return null;
+}
+
 function isAdminPath(path: string | null) {
   return Boolean(
     path &&
@@ -94,9 +107,9 @@ export async function POST(request: NextRequest) {
       timezone: text(body?.timezone, 120),
       userAgent: text(request.headers.get("user-agent"), 1000),
       ipHash: hashIp(request),
-      country: text(request.headers.get("cf-ipcountry"), 10),
-      region: text(request.headers.get("cf-region"), 160),
-      city: text(request.headers.get("cf-ipcity"), 160),
+      country: text(locationHeader(request, "x-vercel-ip-country", "cf-ipcountry"), 10),
+      region: text(locationHeader(request, "x-vercel-ip-country-region", "cf-region"), 160),
+      city: text(locationHeader(request, "x-vercel-ip-city", "cf-ipcity"), 160),
       metadata,
     });
   } catch (error) {

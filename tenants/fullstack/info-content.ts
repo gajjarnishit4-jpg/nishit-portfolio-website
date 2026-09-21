@@ -132,7 +132,7 @@ export const infoPages: Record<string, InfoPageContent> = {
   "slug": "privacy-policy",
   "eyebrow": "PRIVACY POLICY",
   "title": "Your information. Clear purposes. One named Canadian freelancer.",
-  "intro": "Privacy policy for The Fullstack Guys, Nishit Gajjar's independent Canadian freelance technology studio. Last updated: 19 September 2026. This notice describes information handled when you browse, ask a question, request a quote, or engage Nishit's digital services.",
+  "intro": "Privacy policy for The Fullstack Guys, Nishit Gajjar's independent Canadian freelance technology studio. Last updated: 21 September 2026. This notice describes information handled when you browse, ask a question, request a quote, or engage Nishit's digital services.",
   "accent": "#64e6c0",
   "stat": "Your choice",
   "statLabel": "No sale of personal information; ad measurement supports website improvement",
@@ -164,7 +164,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     },
     {
       "title": "06. Service providers and external links",
-      "body": "Where configured for service delivery, providers may process information for databases and analytics (Supabase), AI responses (Groq), intent classification (Hugging Face), infrastructure, email, and business administration. Website analytics can include a pseudonymous visitor and session identifier, pages viewed, clicks, scroll depth, form interaction state without field values, performance measurements, device and browser details, referral and campaign parameters, approximate region supplied by infrastructure, and a one-way hash derived from an IP address. Contact details and message content are stored only when you choose to submit them. Only information needed for the relevant task should be shared. Opening a portfolio website takes you to an independently operated service with its own privacy practices. Portfolio media on this site is served from this site’s own asset paths. External links do not imply endorsement or ownership by Nishit Gajjar."
+      "body": "Where configured for service delivery, providers may process information for databases and analytics (Supabase), AI responses (Groq), intent classification (Hugging Face), infrastructure, email, and business administration. Website analytics can include a pseudonymous visitor and session identifier, pages viewed, clicks, scroll depth, form interaction state without field values, performance measurements, device and browser details, referral and campaign parameters, approximate country, region, and city supplied by infrastructure, and a one-way hash derived from an IP address. Raw IP addresses are not stored in the analytics database. Contact details and message content are stored only when you choose to submit them. Only information needed for the relevant task should be shared. Opening a portfolio website takes you to an independently operated service with its own privacy practices. Portfolio media on this site is served from this site’s own asset paths. External links do not imply endorsement or ownership by Nishit Gajjar."
     },
     {
       "title": "07. Advertising, cookies, and tracking choices",
