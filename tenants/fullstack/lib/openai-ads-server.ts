@@ -10,7 +10,11 @@ function isUuid(value: string) {
 function safeSourceUrl(value: string) {
   try {
     const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:" ? url.href : null;
+    const productionHost = url.hostname === "thefullstackguys.us" || url.hostname === "www.thefullstackguys.us";
+    const localHost = process.env.NODE_ENV !== "production" && (url.hostname === "localhost" || url.hostname === "127.0.0.1");
+    return (url.protocol === "https:" && productionHost) || (url.protocol === "http:" && localHost)
+      ? url.href
+      : null;
   } catch {
     return null;
   }
@@ -45,6 +49,7 @@ export async function sendOpenAIAdsLead(input: ConversionInput) {
         }],
       }),
       cache: "no-store",
+      signal: AbortSignal.timeout(5000),
     },
   );
   if (!response.ok) {

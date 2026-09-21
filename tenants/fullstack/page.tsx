@@ -36,6 +36,7 @@ import { PlatformShowcase } from "@/tenants/fullstack/components/PlatformShowcas
 import { SplashScreen } from "@/tenants/fullstack/components/SplashScreen";
 import { DiscountPopup } from "@/tenants/fullstack/components/DiscountPopup";
 import { VisitorTracker } from "@/tenants/fullstack/components/VisitorTracker";
+import { OpenAIAdsPixel } from "@/tenants/fullstack/components/OpenAIAdsPixel";
 import { BookingCapture, openBookingCapture } from "@/tenants/fullstack/components/BookingCapture";
 import { type Project } from "@/tenants/fullstack/lib/projects";
 import {
@@ -48,9 +49,6 @@ import { services, stages, faqs } from "@/tenants/fullstack/lib/studio-content";
 import { useStudioMotion } from "@/tenants/fullstack/lib/use-studio-motion";
 
 const filters = ["All", "Brand Web", "Software", "Commerce"] as const;
-const CHAT_AUTO_OPEN_KEY = "fullstack-guys-chat-auto-opened";
-const CHAT_AUTO_OPEN_MOBILE_QUERY = "(max-width: 760px)";
-const CHAT_AUTO_OPEN_DELAY_MS = 20000;
 const serviceLabels = [
   "WEB",
   "SOFTWARE",
@@ -65,6 +63,41 @@ const fiverrLink = "https://www.fiverr.com/s/m5qDeDN";
 const upworkLink =
   "https://www.upwork.com/freelancers/~016de1057b0e843c6b?mp_source=share";
 const trustpilotLink = "https://www.trustpilot.com/review/theopenlimits.com";
+const dribbbleLink = "https://dribbble.com/ojas314";
+const behanceLink = "https://www.behance.net/ojasdixit1";
+const designProfiles = [
+  {
+    platform: "Dribbble",
+    handle: "Ojas Dixit / @ojas314",
+    description: "Polished interface concepts, commerce experiences, and visual explorations—presented as a quick, highly visual portfolio.",
+    href: dribbbleLink,
+    mark: "Dr",
+  },
+  {
+    platform: "Behance",
+    handle: "Ojas Dixit / ojasdixit1",
+    description: "Extended design case studies, art direction, and the thinking behind complete digital experiences.",
+    href: behanceLink,
+    mark: "Bē",
+  },
+];
+const designShowcase = [
+  {
+    title: "Tato Pow",
+    discipline: "E-commerce · UX/UI",
+    image: "/tenant-assets/fullstack/portfolio/project-11.jpg",
+  },
+  {
+    title: "Penrose Skin",
+    discipline: "Art direction · Commerce",
+    image: "/tenant-assets/fullstack/portfolio/project-13.jpg",
+  },
+  {
+    title: "Emani",
+    discipline: "Beauty · Digital experience",
+    image: "/tenant-assets/fullstack/portfolio/project-05.jpg",
+  },
+];
 const offerSlide = {
   eyebrow: "NEW PROJECT OFFER",
   title: "Launch with a sharper first sprint.",
@@ -124,33 +157,6 @@ function RatingStars({ rating }: { rating: number }) {
   );
 }
 
-
-type ChatAutoWindow = Window & { __fullstackGuysChatAutoOpen?: string };
-
-function getChatAutoOpenState() {
-  if (typeof window === "undefined") return null;
-  const browserWindow = window as ChatAutoWindow;
-  try {
-    return (
-      browserWindow.sessionStorage?.getItem(CHAT_AUTO_OPEN_KEY) ||
-      browserWindow.__fullstackGuysChatAutoOpen ||
-      null
-    );
-  } catch {
-    return browserWindow.__fullstackGuysChatAutoOpen || null;
-  }
-}
-
-function setChatAutoOpenState(value: string) {
-  if (typeof window === "undefined") return;
-  const browserWindow = window as ChatAutoWindow;
-  browserWindow.__fullstackGuysChatAutoOpen = value;
-  try {
-    browserWindow.sessionStorage?.setItem(CHAT_AUTO_OPEN_KEY, value);
-  } catch {
-    // Some embedded browser contexts disable sessionStorage.
-  }
-}
 
 function subscribeMotion(callback: () => void) {
   const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -351,27 +357,9 @@ export default function Home() {
       : workProjects.filter((project) => project.category === filter);
   const currentService = services[service];
   const openChat = () => {
-    setChatAutoOpenState("manual");
     setMenuOpen(false);
     setChatOpen(true);
   };
-  const handleChatOpenChange = (nextOpen: boolean) => {
-    setChatAutoOpenState(nextOpen ? "manual" : "dismissed");
-    setChatOpen(nextOpen);
-  };
-
-  useEffect(() => {
-    if (getChatAutoOpenState()) return;
-    if (!window.matchMedia(CHAT_AUTO_OPEN_MOBILE_QUERY).matches) return;
-
-    const timer = window.setTimeout(() => {
-      if (getChatAutoOpenState()) return;
-      if (!window.matchMedia(CHAT_AUTO_OPEN_MOBILE_QUERY).matches) return;
-      setChatAutoOpenState("auto");
-      setChatOpen(true);
-    }, CHAT_AUTO_OPEN_DELAY_MS);
-    return () => window.clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (!moving || galleryFocused || reelOpen) return;
@@ -505,6 +493,7 @@ export default function Home() {
           <a href="#about">About</a>
           <a href="#services">Services</a>
           <a href="#proof">Proof</a>
+          <a href="#design-work">Design</a>
           <a href="#platforms">Platforms</a>
           <a href="#work">Projects</a>
           <Link href="/blog">Blog</Link>
@@ -536,6 +525,7 @@ export default function Home() {
             ["About", "#about"],
             ["Services", "#services"],
             ["Proof", "#proof"],
+            ["Design", "#design-work"],
             ["Platforms", "#platforms"],
             ["Projects", "#work"],
             ["Blog", "/blog"],
@@ -912,6 +902,69 @@ export default function Home() {
                 </li>
               ))}
             </ol>
+          </div>
+        </div>
+      </section>
+
+      <section className="design-proof-section" id="design-work" aria-labelledby="design-work-heading">
+        <div className="content-width">
+          <div className="design-proof-label reveal">
+            <span>02 / DESIGN &amp; ARTWORK</span>
+            <span>Selected work. Full portfolios.</span>
+          </div>
+          <div className="design-proof-heading reveal">
+            <p>VISUAL PORTFOLIO</p>
+            <h2 id="design-work-heading">
+              Made to be noticed.<br />
+              <em>Designed to be remembered.</em>
+            </h2>
+            <span>
+              Explore selected interface design, e-commerce experiences, brand direction,
+              and digital artwork—then visit the complete Dribbble and Behance portfolios.
+            </span>
+          </div>
+
+          <div className="design-showcase-grid">
+            {designShowcase.map((project, index) => (
+              <article className={`design-showcase-card design-showcase-card-${index + 1} reveal`} key={project.title}>
+                <div className="design-showcase-image">
+                  <Image
+                    src={project.image}
+                    alt={`${project.title} design work`}
+                    fill
+                    sizes="(max-width: 760px) 100vw, 50vw"
+                  />
+                </div>
+                <div className="design-showcase-caption">
+                  <strong>{project.title}</strong>
+                  <span>{project.discipline}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="design-profile-grid">
+            {designProfiles.map((profile) => (
+              <a
+                className={`design-profile-card design-profile-${profile.platform.toLowerCase()} reveal`}
+                href={profile.href}
+                target="_blank"
+                rel="noreferrer"
+                key={profile.platform}
+                aria-label={`View ${profile.handle} on ${profile.platform}`}
+              >
+                <span className="design-profile-mark" aria-hidden="true">{profile.mark}</span>
+                <div>
+                  <span className="design-profile-platform">{profile.platform}</span>
+                  <h3>{profile.handle}</h3>
+                  <p>{profile.description}</p>
+                  <span className="design-profile-link">
+                    View the full portfolio <ArrowUpRight size={16} />
+                  </span>
+                </div>
+                <ArrowUpRight className="design-profile-arrow" size={20} aria-hidden="true" />
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -1362,6 +1415,7 @@ export default function Home() {
               <a href="#about">About</a>
               <a href="#services">Services</a>
               <a href="#proof">Proof</a>
+              <a href="#design-work">Design</a>
               <a href="#platforms">Platforms</a>
               <a href="#work">Projects</a>
               <Link href="/blog">Blog</Link>
@@ -1377,6 +1431,12 @@ export default function Home() {
               </a>
               <a href={trustpilotLink} target="_blank" rel="noreferrer">
                 Trustpilot <ArrowUpRight size={13} />
+              </a>
+              <a href={dribbbleLink} target="_blank" rel="noreferrer">
+                Dribbble <ArrowUpRight size={13} />
+              </a>
+              <a href={behanceLink} target="_blank" rel="noreferrer">
+                Behance <ArrowUpRight size={13} />
               </a>
               <Link href="/?contact=1">Contact Nishit <ArrowUpRight size={13} /></Link>
             </nav>
@@ -1457,7 +1517,8 @@ export default function Home() {
 
       <BookingCapture />
       <VisitorTracker />
-      <LeadChat open={chatOpen} onOpenChange={handleChatOpenChange} />
+      <OpenAIAdsPixel />
+      <LeadChat open={chatOpen} onOpenChange={setChatOpen} />
     </main>
   );
 }

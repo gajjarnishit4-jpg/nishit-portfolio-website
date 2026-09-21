@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EditorialShell } from "@/tenants/fullstack/components/EditorialShell";
 import { blogArticles, getBlogArticle } from "@/tenants/fullstack/lib/editorial";
+import { FULLSTACK_ORIGIN } from "@/tenant-routing";
 
 export function generateStaticParams() { return blogArticles.map(({ slug }) => ({ slug })); }
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const article = getBlogArticle((await params).slug);
   if (!article) notFound();
-  const jsonLd = { "@context": "https://schema.org", "@type": "Article", headline: article.title, description: article.description, datePublished: article.published, dateModified: article.updated, mainEntityOfPage: `https://thefullstackguys.com/blog/${article.slug}`, author: { "@type": "Person", name: "Nishit Gajjar", url: "https://thefullstackguys.com/about" }, publisher: { "@type": "Person", name: "Nishit Gajjar" } };
+  const jsonLd = { "@context": "https://schema.org", "@type": "Article", headline: article.title, description: article.description, datePublished: article.published, dateModified: article.updated, mainEntityOfPage: `${FULLSTACK_ORIGIN}/blog/${article.slug}`, author: { "@type": "Person", name: "Nishit Gajjar", url: `${FULLSTACK_ORIGIN}/about` }, publisher: { "@type": "Person", name: "Nishit Gajjar" } };
   return <EditorialShell>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     <article className="longform-article">

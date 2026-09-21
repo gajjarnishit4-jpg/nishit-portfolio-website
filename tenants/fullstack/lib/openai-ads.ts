@@ -16,7 +16,12 @@ declare global {
 }
 
 export function hasOpenAIAdsConsent() {
-  return typeof window !== "undefined";
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem("fullstack-openai-ads-consent") === "accepted";
+  } catch {
+    return false;
+  }
 }
 
 export function createOpenAIAdsEventId() {

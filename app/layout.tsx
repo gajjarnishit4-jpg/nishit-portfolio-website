@@ -123,11 +123,6 @@ export default async function RootLayout({
                 }).replace(/</g, "\\u003c"),
               }}
             />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;j.setAttribute("data-openai-ads-pixel","true");var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");try{localStorage.setItem("fullstack-openai-ads-consent","accepted")}catch(e){}oaiq("consent",true);oaiq("init",{pixelId:"LB7HC8FkK1wXF6pY2WKtN5",debug:${process.env.NODE_ENV === "development"}});`,
-              }}
-            />
           </>
         ) : null}
         {children}

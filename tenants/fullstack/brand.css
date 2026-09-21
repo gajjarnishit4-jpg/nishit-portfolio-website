@@ -229,7 +229,7 @@ html[data-tenant="fullstack"] .booking-capture__card p {
 html[data-tenant="fullstack"] .booking-capture__card label {
   display: grid;
   gap: 7px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .08em;
@@ -379,8 +379,8 @@ html[data-tenant="fullstack"] .editorial-footer span { color: #64746a; font-size
 .ads-consent {
   position: fixed;
   z-index: 10000;
-  right: 18px;
-  bottom: 18px;
+  left: 14px;
+  bottom: 60px;
   width: min(430px, calc(100vw - 36px));
   padding: 18px;
   border: 1px solid #324638;
@@ -416,10 +416,30 @@ html[data-tenant="fullstack"] .editorial-footer span { color: #64746a; font-size
   background: #fff;
   color: #102218;
 }
+.ads-consent-manage {
+  position: fixed;
+  z-index: 9998;
+  left: 14px;
+  bottom: 14px;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid #1d312645;
+  border-radius: 999px;
+  background: #fffef9e8;
+  color: #183025;
+  box-shadow: 0 8px 24px #07120c1a;
+  backdrop-filter: blur(12px);
+  font-size: 12px;
+  cursor: pointer;
+}
+.ads-consent-manage:focus-visible {
+  outline: 2px solid #1769ff;
+  outline-offset: 3px;
+}
 @media (max-width: 600px) {
   .ads-consent {
-    right: 12px;
-    bottom: 12px;
+    left: 12px;
+    bottom: 58px;
     width: calc(100vw - 24px);
   }
   .ads-consent div { justify-content: stretch; }

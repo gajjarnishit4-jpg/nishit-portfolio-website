@@ -3,7 +3,7 @@ import { fullstackAssetPaths } from "./tenant-assets";
 import { FULLSTACK_ROUTE_PREFIX, isFullstackHost } from "./tenant-routing";
 
 const fullstackRoutes = new Set([
-  "/", "/about", "/process", "/pricing", "/support", "/privacy-policy", "/terms-of-use", "/refund-policy",
+  "/", "/about", "/process", "/pricing", "/support", "/privacy-policy", "/cookie-policy", "/terms-of-use", "/refund-policy", "/legal-notice",
   "/admin", "/admin/chats", "/admin/leads", "/admin/visitors",
   "/blog", "/news", "/llms.txt", "/llms-full.txt", "/feed.xml",
   "/api/chat", "/api/track", "/api/booking-lead", "/api/discount-lead", "/api/openai-ads-event", "/api/admin/login", "/api/admin/logout", "/api/admin/overview", "/api/admin/chat-action",
@@ -15,13 +15,16 @@ export function proxy(request: NextRequest) {
   const internalTenantRequest =
     pathname === FULLSTACK_ROUTE_PREFIX ||
     pathname.startsWith(`${FULLSTACK_ROUTE_PREFIX}/`);
+  const publicPath = internalTenantRequest
+    ? request.headers.get("x-site-path") || "/"
+    : pathname;
   // The real Host selects the tenant. Never accept a caller-supplied tenant header.
   const fullstack = isFullstackHost(request.headers.get("host"), process.env.NODE_ENV === "development");
   const requestHeaders = new Headers(request.headers);
   requestHeaders.delete("x-site-tenant");
   requestHeaders.delete("x-site-path");
   requestHeaders.set("x-site-tenant", fullstack ? "fullstack" : "default");
-  requestHeaders.set("x-site-path", pathname);
+  requestHeaders.set("x-site-path", publicPath);
 
   // Rewrites are evaluated by the proxy a second time in development. Allow the
   // dedicated app's internal route to resolve, while keeping other tenant paths closed.

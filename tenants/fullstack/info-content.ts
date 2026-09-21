@@ -168,7 +168,7 @@ export const infoPages: Record<string, InfoPageContent> = {
     },
     {
       "title": "07. Advertising, cookies, and tracking choices",
-      "body": "The site uses OpenAI Ads measurement to understand which advertising leads to genuine project inquiries. It may record page views and completed inquiry actions, together with advertising attribution, browser, device, requested page, and identifiers supported by the pixel. Inquiry details may be normalized and hashed by the provider for matching. The site does not use this information to enrol you in unrelated promotional campaigns. First-party activity such as clicks, scroll depth, session identifiers, and chat interactions may also be recorded for service operation, security, and site improvement."
+      "body": "Optional OpenAI Ads measurement stays off unless a visitor allows it. When allowed, it can record page views and completed inquiry actions together with advertising attribution, browser, device, requested page, and identifiers supported by the pixel. The visitor can change that choice using the Privacy choices control. The site does not use this information to enrol anyone in unrelated promotional campaigns. First-party activity such as clicks, scroll depth, session identifiers, and chat interactions may also be recorded for service operation, security, and site improvement."
     },
     {
       "title": "08. Access to client systems",
@@ -314,22 +314,22 @@ export const infoPages: Record<string, InfoPageContent> = {
     slug: "cookie-policy",
     eyebrow: "COOKIE NOTICE",
     title: "Essential site storage, explained plainly.",
-    intro: "Cookie and browser-storage notice for The Fullstack Guys. Last updated: 19 September 2026.",
+    intro: "Cookie and browser-storage notice for The Fullstack Guys. Last updated: 21 September 2026.",
     accent: "#8bdcff",
-    stat: "No ads",
-    statLabel: "OpenAI Ads measurement supports website improvement",
+    stat: "Optional",
+    statLabel: "Advertising measurement is off until you allow it",
     sections: [
       {
         title: "01. What this site uses",
         body: "The site uses necessary cookies and similar browser storage to run features you request, including admin authentication, chat-session continuity, motion preferences, and dismissed interface panels. Server logs and first-party analytics may record technical activity such as pages viewed, clicks, performance, and security events."
       },
       {
-        title: "02. What this site does not use",
-        body: "The site uses the OpenAI Ads SDK to measure page views and completed inquiry actions, using supported identifiers for advertising attribution and matching. Inquiry details are not used to enrol you in email marketing."
+        title: "02. Optional advertising measurement",
+        body: "The OpenAI Ads SDK is not loaded unless you select Allow measurement. If allowed, it measures page views and completed inquiry actions using supported identifiers for advertising attribution and matching. Inquiry details are not used to enrol you in email marketing."
       },
       {
         title: "03. Your choices",
-        body: "You can control or clear cookies and local storage in your browser settings. Clearing storage may sign you out of protected areas or reset chat and display preferences. Blocking essential storage can prevent requested features from working. For information about personal information and cross-border processing, read the Privacy Policy."
+        body: "Use the Privacy choices control on the site to allow or decline optional advertising measurement at any time. You can also clear cookies and local storage in your browser settings. Clearing storage may sign you out of protected areas or reset chat and display preferences. Blocking essential storage can prevent requested features from working. For information about personal information and cross-border processing, read the Privacy Policy."
       }
     ]
   },

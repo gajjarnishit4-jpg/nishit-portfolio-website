@@ -1,4 +1,4 @@
-export const FULLSTACK_DOMAIN = "thefullstackguys.com";
+export const FULLSTACK_DOMAIN = "thefullstackguys.us";
 export const FULLSTACK_ORIGIN = `https://${FULLSTACK_DOMAIN}`;
 export const FULLSTACK_ROUTE_PREFIX = "/tenant/fullstack";
 

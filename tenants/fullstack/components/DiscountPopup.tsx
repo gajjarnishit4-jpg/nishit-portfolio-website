@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import {
   CALENDAR_LINK,
   DISCOUNT_CODE,
@@ -18,7 +18,6 @@ type FieldName = "name" | "email" | "phone" | "niche";
 type FormValues = Record<FieldName, string>;
 type FormErrors = Partial<Record<FieldName, string>>;
 
-const DISCOUNT_STORAGE_KEY = "fullstack-guys-discount-dismissed";
 const fieldOrder: FieldName[] = ["name", "email", "phone", "niche"];
 
 const initialValues: FormValues = {
@@ -27,15 +26,6 @@ const initialValues: FormValues = {
   phone: "",
   niche: "",
 };
-
-function isLocalTestHost() {
-  const host = window.location.hostname;
-  return host === "localhost" || host === "127.0.0.1" || host === "::1";
-}
-
-function shouldRememberPopupChoice() {
-  return typeof window !== "undefined" && !isLocalTestHost();
-}
 
 function validateField(name: FieldName, value: string) {
   const trimmed = value.trim();
@@ -61,12 +51,9 @@ function validateAll(values: FormValues) {
 }
 
 export function DiscountPopup({
-  open: controlledOpen,
+  open,
   onOpenChange,
-}: { open?: boolean; onOpenChange?: (open: boolean) => void } = {}) {
-  const [internalOpen, setInternalOpen] = useState(false);
-  const open = controlledOpen ?? internalOpen;
-  const setOpen = onOpenChange ?? setInternalOpen;
+}: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const [showForm, setShowForm] = useState(false);
   const [claimedCode, setClaimedCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,25 +66,8 @@ export function DiscountPopup({
   const submitRef = useRef<HTMLButtonElement | null>(null);
   const advanceTimer = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (controlledOpen !== undefined) return;
-    if (
-      shouldRememberPopupChoice() &&
-      window.localStorage.getItem(DISCOUNT_STORAGE_KEY)
-    )
-      return;
-    const timer = window.setTimeout(() => setInternalOpen(true), 5600);
-    return () => window.clearTimeout(timer);
-  }, [controlledOpen]);
-
-  function rememberPopupChoice() {
-    if (!shouldRememberPopupChoice()) return;
-    window.localStorage.setItem(DISCOUNT_STORAGE_KEY, "1");
-  }
-
   function closePopup() {
-    rememberPopupChoice();
-    setOpen(false);
+    onOpenChange(false);
   }
 
   function focusAndScroll(target: FieldName | "submit", shouldFocus = true) {
@@ -171,7 +141,6 @@ export function DiscountPopup({
       }
       setClaimedCode(data.code || DISCOUNT_CODE);
       if (eventId) measureOpenAIAds("lead_created", { type: "customer_action" }, eventId);
-      rememberPopupChoice();
     } catch {
       setError("Connection dipped. Try once more or contact Nishit directly.");
     } finally {

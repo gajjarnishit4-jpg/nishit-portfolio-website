@@ -333,7 +333,7 @@ export async function saveHeatmapEvent({
   const now = new Date().toISOString();
   const scrollDepth = Math.max(0, Math.min(100, Number(metadata?.depth || 0)));
   const deviceType = !viewportWidth ? "unknown" : viewportWidth < 760 ? "mobile" : viewportWidth < 1100 ? "tablet" : "desktop";
-  const url = path ? new URL(path, "https://thefullstackguys.com") : null;
+  const url = path ? new URL(path, "https://thefullstackguys.us") : null;
   const utm = url
     ? {
         source: url.searchParams.get("utm_source"),
