@@ -3,19 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { saveHeatmapEvent } from "@/tenants/fullstack/lib/chat-storage";
 
 const allowedEvents = new Set([
-  "pageview",
   "click",
   "outbound_click",
-  "move",
-  "scroll",
-  "engagement",
-  "page_exit",
-  "visibility",
-  "form_start",
-  "form_submit",
-  "web_vital",
-  "client_error",
 ]);
+
+const mainEvents = new Set(["whatsapp", "call_now", "book_call"]);
 
 function text(value: unknown, max = 500) {
   return typeof value === "string" ? value.trim().slice(0, max) : null;
@@ -76,6 +68,9 @@ export async function POST(request: NextRequest) {
   }
 
   const metadata = publicMetadata(body?.metadata);
+  if (typeof metadata.mainEvent !== "string" || !mainEvents.has(metadata.mainEvent)) {
+    return NextResponse.json({ error: "Only primary CTA events are tracked." }, { status: 400 });
+  }
   const visitorId = text(metadata.visitorId, 80);
   const path = text(body?.path, 1200);
   if (!text(body?.sessionId, 80) || !visitorId) {

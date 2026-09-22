@@ -2528,10 +2528,11 @@ button:hover .arrow--diagonal {
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: 28px;
-  min-height: 100svh;
+  height: 100svh;
   padding: 24px 18px;
-  position: sticky;
+  position: fixed;
   top: 0;
+  width: 248px;
 }
 
 .admin-sidebar span,
@@ -2572,6 +2573,8 @@ button:hover .arrow--diagonal {
   align-content: start;
   display: grid;
   gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .admin-sidebar nav a,
@@ -2608,6 +2611,7 @@ button:hover .arrow--diagonal {
   display: grid;
   gap: 14px;
   padding: 18px;
+  grid-column: 2;
 }
 
 .admin-topbar {
@@ -3314,6 +3318,8 @@ button:hover .arrow--diagonal {
     grid-template-rows: auto auto;
     min-height: auto;
     position: relative;
+    height: auto;
+    width: auto;
   }
 
   .admin-sidebar nav {

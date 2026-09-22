@@ -152,10 +152,10 @@ export function BookingCapture() {
           />
         </label>
         {error ? <p className="booking-capture__error">{error}</p> : null}
-        <button className="accent-button" type="submit" disabled={submitting}>
+        <button className="accent-button" type="submit" disabled={submitting} data-main-event="book_call">
           {submitting ? "Saving..." : "Save details & book"} <ArrowUpRight size={16} />
         </button>
-        <a className="booking-capture__whatsapp" href={whatsappLink} target="_blank" rel="noreferrer" onClick={() => trackOpenAILead("booking_whatsapp")}>
+        <a className="booking-capture__whatsapp" href={whatsappLink} target="_blank" rel="noreferrer" data-main-event="whatsapp" onClick={() => trackOpenAILead("booking_whatsapp")}>
           Fast-track on WhatsApp <ArrowUpRight size={14} />
         </a>
       </form>

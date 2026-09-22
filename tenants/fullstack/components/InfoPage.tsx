@@ -23,7 +23,7 @@ export function InfoPage({ content }: { content: InfoPageContent }) {
           <Link href="/about">About</Link>
           <Link href="/process">Process</Link>
           <Link href="/pricing">Pricing</Link>
-          <button type="button" onClick={openBookingCapture}>
+          <button type="button" onClick={openBookingCapture} data-main-event="book_call">
             Request a call <Arrow diagonal />
           </button>
         </nav>
@@ -34,7 +34,7 @@ export function InfoPage({ content }: { content: InfoPageContent }) {
         <h1>{content.title}</h1>
         <p>{content.intro}</p>
         <div className="info-hero__actions">
-          <button type="button" onClick={openBookingCapture}>
+          <button type="button" onClick={openBookingCapture} data-main-event="book_call">
             Request a project call <Arrow />
           </button>
           <Link href="/?contact=1">Nishit Gajjar support</Link>

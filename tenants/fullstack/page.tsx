@@ -877,7 +877,7 @@ export default function Home() {
             <div className="proof-approach-heading reveal">
               <p className="proof-eyebrow">THE NISHIT GAJJAR APPROACH</p>
               <h3>A good partner makes<br /><em>all the difference.</em></h3>
-              <button type="button" onClick={openBookingCapture} className="proof-call-link">
+              <button type="button" onClick={openBookingCapture} className="proof-call-link" data-main-event="book_call">
                 Meet Nishit <ArrowUpRight size={17} />
               </button>
             </div>
@@ -1307,7 +1307,7 @@ export default function Home() {
             A direct line to Nishit—the person doing the work.
             <br />One accountable partner for the finished product.
           </p>
-          <button type="button" onClick={openBookingCapture} className="white-button">
+          <button type="button" onClick={openBookingCapture} className="white-button" data-main-event="book_call">
             Meet your technology partner <ArrowUpRight size={17} />
           </button>
         </div>
@@ -1341,7 +1341,7 @@ export default function Home() {
             <button className="accent-button" onClick={() => setOfferOpen(true)}>
               View offer <ArrowUpRight size={16} />
             </button>
-            <button type="button" onClick={openBookingCapture} className="line-button">
+            <button type="button" onClick={openBookingCapture} className="line-button" data-main-event="book_call">
               Request a call <ArrowUpRight size={15} />
             </button>
           </div>
@@ -1401,7 +1401,7 @@ export default function Home() {
           <button className="accent-button" onClick={openChat}>
             Start a project <ArrowUpRight size={18} />
           </button>
-          <button type="button" className="line-button" onClick={openBookingCapture}>
+          <button type="button" className="line-button" onClick={openBookingCapture} data-main-event="book_call">
             Request a discovery call <ArrowUpRight size={16} />
           </button>
         </div>
